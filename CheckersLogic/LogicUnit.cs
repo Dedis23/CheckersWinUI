@@ -80,6 +80,11 @@ namespace CheckersLogic
             }
         }
 
+        public void CreateBoard()
+        {
+            m_Board.BuildBoard();
+        }
+
         public eGameMode Mode
         {
             get
