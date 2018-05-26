@@ -40,10 +40,10 @@ namespace CheckersLogic
             Ex,
         }
 
-        public LogicUnit()
+        public LogicUnit(int i_BoardSize)
         {
             m_Status = eGameStatus.Initialize;
-            //m_Board = new Board();
+            m_Board = new Board(i_BoardSize);
             m_CurrentShapeTurn = eCurrentShapeTurn.Ex;
             m_Forfeit = false;
             m_CanEatAgain = false;
@@ -78,12 +78,6 @@ namespace CheckersLogic
             {
                 return m_Board;
             }
-        }
-
-        public void CreateBoard(int i_BoardSize)
-        {
-            //m_Board.InitializeBoardArray(i_BoardSize);
-            m_Board.BuildBoard();
         }
 
         public eGameMode Mode
