@@ -16,6 +16,7 @@ namespace CheckersWinUI
         private CheckBox m_Player2CheckBox;
         private TextBox m_Player2NameTextBox;
         private Button m_DoneButton;
+        private int m_BoardSize;
 
         public SettingsForm()
         {
@@ -44,6 +45,7 @@ namespace CheckersWinUI
             m_RadioButton10x10.Text = "10 x 10";
             m_RadioButton10x10.Font = new Font("Arial", 9, FontStyle.Bold);
             m_RadioButton10x10.AutoSize = false;
+            m_RadioButton10x10.CheckedChanged += new EventHandler(radioButton10x10_CheckedChanged);
             m_RadioButton10x10.Top = 62;
             m_RadioButton10x10.Left = 195;
             this.Controls.Add(m_RadioButton10x10);
@@ -53,6 +55,7 @@ namespace CheckersWinUI
             m_RadioButton8x8.Text = "8 x 8";
             m_RadioButton8x8.Font = new Font("Arial", 9, FontStyle.Bold);
             m_RadioButton8x8.AutoSize = false;
+            m_RadioButton8x8.CheckedChanged += new EventHandler(radioButton8x8_CheckedChanged);
             m_RadioButton8x8.Top = 62;
             m_RadioButton8x8.Left = 116;
             this.Controls.Add(m_RadioButton8x8);
@@ -62,7 +65,9 @@ namespace CheckersWinUI
             m_RadioButton6x6.Text = "6 x 6";
             m_RadioButton6x6.Font = new Font("Arial", 9, FontStyle.Bold);
             m_RadioButton6x6.AutoSize = false;
-            m_RadioButton6x6.Checked = true;
+            m_RadioButton6x6.Checked = true; // this is for making 6x6 the default size
+            m_BoardSize = 6;
+            m_RadioButton6x6.CheckedChanged += new EventHandler(radioButton6x6_CheckedChanged);
             m_RadioButton6x6.Top = 62;
             m_RadioButton6x6.Left = 35;
             this.Controls.Add(m_RadioButton6x6);
@@ -118,7 +123,58 @@ namespace CheckersWinUI
             m_DoneButton.ForeColor = Color.Black;
             m_DoneButton.Top = 200;
             m_DoneButton.Left = 175;
+            m_DoneButton.Click += new EventHandler(doneButton_Clicked);
             this.Controls.Add(m_DoneButton);
+        }
+
+        private void radioButton10x10_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton radioButton10x10 = sender as RadioButton;
+            if (radioButton10x10.Checked == true)
+            {
+                m_BoardSize = 10;
+            }
+        }
+
+        private void radioButton8x8_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton radioButton8x8 = sender as RadioButton;
+            if (radioButton8x8.Checked == true)
+            {
+                m_BoardSize = 8;
+            }
+        }
+
+        private void radioButton6x6_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton radioButton6x6 = sender as RadioButton;
+            if (radioButton6x6.Checked == true)
+            {
+                m_BoardSize = 6;
+            }
+        }
+
+        private void doneButton_Clicked(object sender, EventArgs e)
+        {
+            bool isValidSettings = checkIfValidSettings();
+            if (isValidSettings == true)
+            {
+                this.Hide();
+            }
+        }
+
+        private bool checkIfValidSettings()
+        {
+            bool validSettings = false;
+            if (m_Player2NameTextBox.Text == string.Empty || m_Player1NameTextBox.Text == string.Empty)
+            {
+                MessageBox.Show("Please enter name for each player.", "Error");
+            }
+            else
+            {
+                validSettings = true;
+            }
+            return validSettings;
         }
 
         private void player2CheckBox_CheckedChanged(object sender, EventArgs e)
@@ -133,6 +189,38 @@ namespace CheckersWinUI
             {
                 m_Player2NameTextBox.Text = string.Empty;
                 m_Player2NameTextBox.Enabled = true;
+            }
+        }
+
+        public int BoardSize
+        {
+            get
+            {
+                return m_BoardSize;
+            }
+        }
+
+        public string Player1Name
+        {
+            get
+            {
+                return m_Player1NameTextBox.Text;
+            }
+        }
+
+        public bool IsHumanPlayer2
+        {
+            get
+            {
+                return m_Player2CheckBox.Checked;
+            }
+        }
+
+        public string Player2Name
+        {
+            get
+            {
+                return m_Player2NameTextBox.Text;
             }
         }
     }

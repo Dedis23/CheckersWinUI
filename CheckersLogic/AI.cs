@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Checkers
+namespace CheckersLogic
 {
     public class AI
     {
