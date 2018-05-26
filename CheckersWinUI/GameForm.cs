@@ -18,6 +18,7 @@ namespace CheckersWinUI
             r_LogicUnit = new LogicUnit(i_BoardSize);
             createBoard();
             r_LogicUnit.CreatePlayerOne(i_Player1Name);
+            // this is a new comment
         }
 
         private void createBoard()
