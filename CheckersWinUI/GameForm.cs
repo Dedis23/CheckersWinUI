@@ -41,19 +41,23 @@ namespace CheckersWinUI
                 {
                     if (row % 2 == 0 && col % 2 == 0 || row % 2 == 1 && col % 2 == 1)
                     {
-                        r_CheckersBoard[row * i_BoardSize + col] = new CheckersSoldier(CheckersSoldier.eSoldierType.None, false);
+                        r_CheckersBoard.Add(new CheckersSoldier(CheckersSoldier.eSoldierType.None, false));
+                        this.Controls.Add(r_CheckersBoard[row * i_BoardSize + col]);
                     }
                     else if (row < i_BoardSize / 2 - 1 && (row % 2 == 0 && col % 2 == 1 || row % 2 == 1 && col % 2 == 0))
                     {
-                        r_CheckersBoard[row * i_BoardSize + col] = new CheckersSoldier(CheckersSoldier.eSoldierType.WhitePawn, true);
+                        r_CheckersBoard.Add(new CheckersSoldier(CheckersSoldier.eSoldierType.WhitePawn, true));
+                        this.Controls.Add(r_CheckersBoard[row * i_BoardSize + col]);
                     }
                     else if (row >= i_BoardSize / 2 + 1 && (row % 2 == 0 && col % 2 == 1 || row % 2 == 1 && col % 2 == 0))
                     {
-                        r_CheckersBoard[row * i_BoardSize + col] = new CheckersSoldier(CheckersSoldier.eSoldierType.BlackPawn, true);
+                        r_CheckersBoard.Add(new CheckersSoldier(CheckersSoldier.eSoldierType.BlackPawn, true));
+                        this.Controls.Add(r_CheckersBoard[row * i_BoardSize + col]);
                     }
                     else
                     {
-                        r_CheckersBoard[row * i_BoardSize + col] = new CheckersSoldier(CheckersSoldier.eSoldierType.None, true);
+                        r_CheckersBoard.Add(new CheckersSoldier(CheckersSoldier.eSoldierType.None, true));
+                        this.Controls.Add(r_CheckersBoard[row * i_BoardSize + col]);
                     }
                 }
             }
