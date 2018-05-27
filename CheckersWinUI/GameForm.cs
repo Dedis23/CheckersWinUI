@@ -58,10 +58,10 @@ namespace CheckersWinUI
         {
             buildFrame(i_BoardSize);
             buildCheckersBoard(i_BoardSize);
-            buildInnerForms(i_BoardSize);
+            buildPlayersForm(i_BoardSize);
         }
 
-        private void buildInnerForms(int i_BoardSize)
+        private void buildPlayersForm(int i_BoardSize)
         {
             StringBuilder player1TextLabel = new StringBuilder(r_LogicUnit.PlayerOne.Name);
             player1TextLabel.Append(": ");
@@ -117,27 +117,32 @@ namespace CheckersWinUI
         {
             for (int row = 0; row < i_BoardSize; row++)
             {
-                for (int col = 0; col< i_BoardSize; col++)
+                for (int col = 0; col < i_BoardSize; col++)
                 {
                     if (row % 2 == 0 && col % 2 == 0 || row % 2 == 1 && col % 2 == 1)
                     {
-                        r_CheckersBoard.Add(new CheckersSoldier(CheckersSoldier.eSoldierType.None, false));
+                        r_CheckersBoard.Add(new CheckersSoldier(CheckersSoldier.eSoldierType.None, false, row, col));
                         this.Controls.Add(r_CheckersBoard[row * i_BoardSize + col]);
                     }
                     else if (row < i_BoardSize / 2 - 1 && (row % 2 == 0 && col % 2 == 1 || row % 2 == 1 && col % 2 == 0))
                     {
-                        r_CheckersBoard.Add(new CheckersSoldier(CheckersSoldier.eSoldierType.BlackPawn, true));
+                        r_CheckersBoard.Add(new CheckersSoldier(CheckersSoldier.eSoldierType.BlackPawn, true, row, col));
                         this.Controls.Add(r_CheckersBoard[row * i_BoardSize + col]);
                     }
                     else if (row >= i_BoardSize / 2 + 1 && (row % 2 == 0 && col % 2 == 1 || row % 2 == 1 && col % 2 == 0))
                     {
-                        r_CheckersBoard.Add(new CheckersSoldier(CheckersSoldier.eSoldierType.WhitePawn, true));
+                        r_CheckersBoard.Add(new CheckersSoldier(CheckersSoldier.eSoldierType.WhitePawn, true, row, col));
                         this.Controls.Add(r_CheckersBoard[row * i_BoardSize + col]);
                     }
                     else
                     {
-                        r_CheckersBoard.Add(new CheckersSoldier(CheckersSoldier.eSoldierType.None, true));
+                        r_CheckersBoard.Add(new CheckersSoldier(CheckersSoldier.eSoldierType.None, true, row, col));
                         this.Controls.Add(r_CheckersBoard[row * i_BoardSize + col]);
+                    }
+
+                    if (r_CheckersBoard[row * i_BoardSize + col] != null)
+                    {
+                        r_CheckersBoard[row * i_BoardSize + col].Click += new EventHandler(checkersSoldier_Clicked);
                     }
                 }
             }
@@ -156,5 +161,77 @@ namespace CheckersWinUI
                 currentTopCheckersBoard = currentTopCheckersBoard + heightOfCheckersSoldier;
             }
         }
+
+        private void checkersSoldier_Clicked(object sender, EventArgs e)
+        {
+            CheckersSoldier checkersSoldier = sender as CheckersSoldier;
+            bool findBlueColorCheckersSoldier = findBlueBackColorCheckersSoldier();
+
+            if (findBlueColorCheckersSoldier)
+            {
+                if (checkersSoldier.CheckerSoilderType != CheckersSoldier.eSoldierType.None)
+                {
+                    checkersSoldier.BackColor = Color.FromArgb(0, 191, 255);
+                }
+            }
+
+            if (checkersSoldier.BackColor == Color.FromArgb(0, 191, 255) && !findBlueColorCheckersSoldier)
+            {
+                checkersSoldier.BackColor = Color.Peru;
+            }
+        }
+
+        private bool findBlueBackColorCheckersSoldier()
+        {
+            bool thereIsNotBlueBackColorCheckersSoldier = true;
+
+            for (int i = 0; i < r_CheckersBoard.Count; i++)
+            {
+                if (r_CheckersBoard[i].BackColor == Color.FromArgb(0, 191, 255))
+                {
+                    thereIsNotBlueBackColorCheckersSoldier = false;
+                }
+            }
+            return thereIsNotBlueBackColorCheckersSoldier;
+        }
     }
 }
+
+
+
+
+/*
+if (MessageBox.Show(
+@"Player 2 Won!
+Another Round?",
+"Damka",
+MessageBoxButtons.YesNo,
+MessageBoxIcon.Information) == DialogResult.Yes)
+{
+}
+if (MessageBox.Show(
+@"Player 1 Won!
+Another Round?",
+"Damka",
+MessageBoxButtons.YesNo,
+MessageBoxIcon.Information) == DialogResult.Yes)
+{
+}
+
+if (MessageBox.Show(
+@"Tie!
+Another Round?",
+"Damka",
+MessageBoxButtons.YesNo,
+MessageBoxIcon.Information) == DialogResult.Yes)
+{
+}
+            if (MessageBox.Show(
+@"Invalid Move!
+Please Try Again",
+"Damka",
+MessageBoxButtons.OK,
+MessageBoxIcon.Error) == DialogResult.Yes)
+            {
+            }
+*/

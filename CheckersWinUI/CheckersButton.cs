@@ -14,7 +14,6 @@ namespace CheckersWinUI
             WhiteKing,
             None,
         }
-
         private readonly Timer r_Timer;
         private PictureBox m_Picture;
 

@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace CheckersWinUI
 {
-    public class CheckersSoldier: PictureBox
+    public class CheckersSoldier : PictureBox
     {
         public enum eSoldierType
         {
@@ -15,12 +15,19 @@ namespace CheckersWinUI
         }
 
         private readonly Timer r_Timer;
+        private eSoldierType m_CheckerSoilderType;
+        private int m_RowOfSoilder;
+        private int m_ColOfSoilder;
 
-        public CheckersSoldier(eSoldierType i_SoldierType, bool i_IsActive)
+
+        public CheckersSoldier(eSoldierType i_SoldierType, bool i_IsActive, int i_RowOfSoilder, int i_ColOfSoilder)
         {
             this.Width = 45;
             this.Height = 45;
+            this.m_RowOfSoilder = i_RowOfSoilder;
+            this.m_ColOfSoilder = i_ColOfSoilder;
             this.BorderStyle = BorderStyle.FixedSingle;
+            this.m_CheckerSoilderType = i_SoldierType;
             if (i_IsActive == true)
             {
                 setCorrectImage(i_SoldierType);
@@ -54,5 +61,41 @@ namespace CheckersWinUI
                     break;
             }
         }
+
+        public eSoldierType CheckerSoilderType
+        {
+            get
+            {
+                return m_CheckerSoilderType;
+            }
+            set
+            {
+                m_CheckerSoilderType = value;
+            }
+        }
+
+        public int RowOfSoilder
+        {
+            get
+            {
+                return m_RowOfSoilder;
+            }
+            set
+            {
+                m_RowOfSoilder = value;
+            }
+        }
+        public int ColOfSoilder
+        {
+            get
+            {
+                return m_ColOfSoilder;
+            }
+            set
+            {
+                m_ColOfSoilder = value;
+            }
+        }
+
     }
 }
