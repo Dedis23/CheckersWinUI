@@ -51,29 +51,5 @@ namespace CheckersWinUI
                     break;
             }
         }
-
-        public new int Top
-        {
-            set
-            {
-                this.Top = value;
-            }
-            get
-            {
-                return this.Top;
-            }
-        }
-
-        public new int Left
-        {
-            set
-            {
-                this.Left = value;
-            }
-            get
-            {
-                return this.Left;
-            }
-        }
     }
 }
