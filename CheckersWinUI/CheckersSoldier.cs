@@ -20,13 +20,16 @@ namespace CheckersWinUI
         {
             this.Width = 32;
             this.Height = 32;
+            this.BorderStyle = BorderStyle.FixedSingle;
             if (i_IsActive == true)
             {
                 setCorrectImage(i_SoldierType);
+                this.BackColor = Color.Peru;
+                this.SizeMode = PictureBoxSizeMode.CenterImage;
             }
             else
             {
-                this.BackColor = Color.Black;
+                this.BackColor = Color.Wheat;
                 this.Enabled = false;
             }
         }
