@@ -23,6 +23,7 @@ namespace CheckersWinUI
         private void createBoard()
         {
             r_LogicUnit.CreateBoard();
+
         }
     }
 }
