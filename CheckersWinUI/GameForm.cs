@@ -20,14 +20,14 @@ namespace CheckersWinUI
             this.ShowIcon = false;
             r_LogicUnit = new LogicUnit(i_BoardSize);
             r_CheckersBoard = new List<CheckersSoldier>(i_BoardSize * i_BoardSize);
-            //createBoard();
-            //r_LogicUnit.CreatePlayerOne(i_Player1Name);
+            createBoard(i_BoardSize);
+            r_LogicUnit.CreatePlayerOne(i_Player1Name);
         }
 
-        private void createBoard()
+        private void createBoard(int i_BoardSize)
         {
             r_LogicUnit.CreateBoard();
-            buildCheckersBoard(r_CheckersBoard.Count);
+            buildCheckersBoard(i_BoardSize);
         }
 
         private void buildCheckersBoard(int i_BoardSize)
@@ -41,19 +41,19 @@ namespace CheckersWinUI
                 {
                     if (row % 2 == 0 && col % 2 == 0 || row % 2 == 1 && col % 2 == 1)
                     {
-                        r_CheckersBoard[row * i_BoardSize + col] = new CheckersSoldier(CheckersSoldier.eSoldierType.None, true);
+                        r_CheckersBoard[row * i_BoardSize + col] = new CheckersSoldier(CheckersSoldier.eSoldierType.None, false);
                     }
                     else if (row < i_BoardSize / 2 - 1 && (row % 2 == 0 && col % 2 == 1 || row % 2 == 1 && col % 2 == 0))
                     {
-                        r_CheckersBoard[row * i_BoardSize + col] = new CheckersSoldier(CheckersSoldier.eSoldierType.WhitePawn, false);
+                        r_CheckersBoard[row * i_BoardSize + col] = new CheckersSoldier(CheckersSoldier.eSoldierType.WhitePawn, true);
                     }
                     else if (row >= i_BoardSize / 2 + 1 && (row % 2 == 0 && col % 2 == 1 || row % 2 == 1 && col % 2 == 0))
                     {
-                        r_CheckersBoard[row * i_BoardSize + col] = new CheckersSoldier(CheckersSoldier.eSoldierType.BlackPawn, false);
+                        r_CheckersBoard[row * i_BoardSize + col] = new CheckersSoldier(CheckersSoldier.eSoldierType.BlackPawn, true);
                     }
                     else
                     {
-                        r_CheckersBoard[row * i_BoardSize + col] = new CheckersSoldier(CheckersSoldier.eSoldierType.None, false);
+                        r_CheckersBoard[row * i_BoardSize + col] = new CheckersSoldier(CheckersSoldier.eSoldierType.None, true);
                     }
                 }
             }
@@ -67,6 +67,7 @@ namespace CheckersWinUI
                 for (int col = 0; col < i_BoardSize; col++)
                 {
                     r_CheckersBoard[row * i_BoardSize + col].Top = topCheckersBoard;
+                    r_CheckersBoard[row * i_BoardSize + col].Left = leftCheckersBoard + col * widthOfCheckersSoldier;
                 }
             }
         }
