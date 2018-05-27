@@ -11,8 +11,11 @@ namespace CheckersWinUI
         {
             m_SettingsForm = new SettingsForm();
             m_SettingsForm.ShowDialog();
-            m_GameForm = new GameForm(m_SettingsForm.BoardSize, m_SettingsForm.IsHumanPlayer2, m_SettingsForm.Player1Name, m_SettingsForm.Player2Name);
-            m_GameForm.ShowDialog();
+            if (m_SettingsForm.ValidSettings == true)
+            {
+                m_GameForm = new GameForm(m_SettingsForm.BoardSize, m_SettingsForm.IsHumanPlayer2, m_SettingsForm.Player1Name, m_SettingsForm.Player2Name);
+                m_GameForm.ShowDialog();
+            }
         }
     }
 }

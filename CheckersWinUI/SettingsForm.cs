@@ -17,15 +17,17 @@ namespace CheckersWinUI
         private TextBox m_Player2NameTextBox;
         private Button m_DoneButton;
         private int m_BoardSize;
+        private bool m_IsValidSettings;
 
         public SettingsForm()
         {
-            StartPosition = FormStartPosition.CenterScreen;
+            this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.Height = 280;
             this.Text = "Game Settings";
             this.ShowIcon = false;
+            this.m_IsValidSettings = false;
             buildInnerForms();
         }
 
@@ -156,10 +158,18 @@ namespace CheckersWinUI
 
         private void doneButton_Clicked(object sender, EventArgs e)
         {
-            bool isValidSettings = checkIfValidSettings();
-            if (isValidSettings == true)
+            m_IsValidSettings = checkIfValidSettings();
+            if (m_IsValidSettings == true)
             {
                 this.Hide();
+            }
+        }
+
+        public bool ValidSettings
+        {
+            get
+            {
+                return m_IsValidSettings;
             }
         }
 
