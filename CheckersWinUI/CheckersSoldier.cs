@@ -18,8 +18,8 @@ namespace CheckersWinUI
 
         public CheckersSoldier(eSoldierType i_SoldierType, bool i_IsActive)
         {
-            this.Width = 32;
-            this.Height = 32;
+            this.Width = 45;
+            this.Height = 45;
             this.BorderStyle = BorderStyle.FixedSingle;
             if (i_IsActive == true)
             {
