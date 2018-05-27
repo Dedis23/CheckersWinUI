@@ -27,9 +27,9 @@ namespace CheckersWinUI
             this.Text = "Damka";
             this.ShowIcon = false;
             r_LogicUnit = new LogicUnit(i_BoardSize);
-            createBoard();
+            // createBoard();
             r_LogicUnit.CreatePlayerOne(i_Player1Name);
-            r_CheckersBoard = new List<CheckersButton>(i_BoardSize);
+            //r_CheckersBoard = new List<CheckersButton>(i_BoardSize * i_BoardSize);
         }
 
         private void createBoard()
@@ -54,15 +54,32 @@ namespace CheckersWinUI
 
         private void BuildCheckersBoard(int i_BoardSize)
         {
-            for(int i = 0; i < i_BoardSize; i++)
+            for(int row = 0; row < i_BoardSize; row++)
             {
-                for(int j = 0; j < i_BoardSize; j++)
+                for(int col = 0; col < i_BoardSize; col++)
                 {
-                    r_CheckersBoard[i] = new CheckersButton();
-                    r_CheckersBoard[i]
+                    if(row % 2 == 0 && col % 2 == 0 || row % 2 == 1 && col % 2 == 1)
+                    {
+                        r_CheckersBoard[row * i_BoardSize + col] = new CheckersButton(CheckersButton.eSoldierType.None, true);
+                    }
+                    else if(row < i_BoardSize / 2 - 1 && (row % 2 == 0 && col % 2 == 1 || row % 2 == 1 && col % 2 == 0))
+                    {
+                        r_CheckersBoard[row * i_BoardSize + col] = new CheckersButton(CheckersButton.eSoldierType.WhitePawn, false);
+                    }
+                    else if (row >= i_BoardSize / 2 + 1 && (row % 2 == 0 && col % 2 == 1 || row % 2 == 1 && col % 2 == 0))
+                    {
+                        r_CheckersBoard[row * i_BoardSize + col] = new CheckersButton(CheckersButton.eSoldierType.BlackPawn, false);
+                    }
+                    else
+                    {
+                        r_CheckersBoard[row * i_BoardSize + col] = new CheckersButton(CheckersButton.eSoldierType.None, false);
+                    }
                 }
-
             }
+
+
         }
+
+
     }
 }

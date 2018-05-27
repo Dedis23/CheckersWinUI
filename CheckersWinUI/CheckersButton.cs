@@ -4,7 +4,7 @@ using CheckersLogic;
 
 namespace CheckersWinUI
 {
-    class CheckersButton: Button
+    public class CheckersButton: Button
     {
         public enum eSoldierType
         {
@@ -12,6 +12,7 @@ namespace CheckersWinUI
             BlackKing,
             WhitePawn,
             WhiteKing,
+            None,
         }
 
         private readonly Timer r_Timer;
