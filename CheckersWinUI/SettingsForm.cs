@@ -29,6 +29,8 @@ namespace CheckersWinUI
             this.ShowIcon = false;
             this.m_IsValidSettings = false;
             buildInnerForms();
+            CheckersSoldier cs = new CheckersSoldier(CheckersSoldier.eSoldierType.None, false);
+            this.Controls.Add(cs);
         }
 
         private void buildInnerForms()
