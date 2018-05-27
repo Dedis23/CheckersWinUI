@@ -16,6 +16,7 @@ namespace CheckersWinUI
             StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
+            this.Height = 1000;
             this.Text = "Damka";
             this.ShowIcon = false;
             r_LogicUnit = new LogicUnit(i_BoardSize);
@@ -32,8 +33,8 @@ namespace CheckersWinUI
 
         private void buildCheckersBoard(int i_BoardSize)
         {
-            int topCheckersBoard = 30;
-            int leftCheckersBoard = 10;
+            int CurrentTopCheckersBoard = 50;
+            int CurrentLeftCheckersBoard = 30;
 
             for (int row = 0; row < i_BoardSize; row++)
             {
@@ -67,12 +68,12 @@ namespace CheckersWinUI
 
             for (int row = 0; row < i_BoardSize; row++)
             {
-                topCheckersBoard = topCheckersBoard + row * heightOfCheckersSoldier;
                 for (int col = 0; col < i_BoardSize; col++)
                 {
-                    r_CheckersBoard[row * i_BoardSize + col].Top = topCheckersBoard;
-                    r_CheckersBoard[row * i_BoardSize + col].Left = leftCheckersBoard + col * widthOfCheckersSoldier;
+                    r_CheckersBoard[row * i_BoardSize + col].Top = CurrentTopCheckersBoard;
+                    r_CheckersBoard[row * i_BoardSize + col].Left = CurrentLeftCheckersBoard + col * widthOfCheckersSoldier;
                 }
+                CurrentTopCheckersBoard = CurrentTopCheckersBoard + heightOfCheckersSoldier;
             }
         }
     }
