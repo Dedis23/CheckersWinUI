@@ -27,15 +27,14 @@ namespace CheckersWinUI
             this.Text = "Damka";
             this.ShowIcon = false;
             r_LogicUnit = new LogicUnit(i_BoardSize);
-            createBoard();
             r_LogicUnit.CreatePlayerOne(i_Player1Name);
             r_CheckersBoard = new List<CheckersSoldier>(i_BoardSize * i_BoardSize);
+            createBoard();
         }
 
         private void createBoard()
         {
-            r_LogicUnit.CreateBoard();
-            
+            r_LogicUnit.CreateBoard();   
             switch(r_CheckersBoard.Count)
             {
                 case k_SmallBoardSize:
