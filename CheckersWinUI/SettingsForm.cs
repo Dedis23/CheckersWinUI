@@ -30,7 +30,7 @@ namespace CheckersWinUI
             this.m_IsValidSettings = false;
             buildInnerForms();
             //CheckersSoldier cs1 = new CheckersSoldier(CheckersSoldier.eSoldierType.None, false);
-            //CheckersSoldier cs2 = new CheckersSoldier(CheckersSoldier.eSoldierType.WhitePawn, true);
+            //CheckersSoldier cs2 = new CheckersSoldier(CheckersSoldier.eSoldierType.BlackKing, true);
             //cs2.Left += cs2.Width;
             //this.Controls.Add(cs1);
             //this.Controls.Add(cs2);
