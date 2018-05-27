@@ -6,14 +6,20 @@ namespace CheckersWinUI
 {
     class CheckersButton: Button
     {
-        private const int k_LengthIncrease = 15;
-        private const int k_WidthIncrease = 10;
-
-
-        //private char sign;
-
-        public CheckersButton()
+        public enum eSoldierType
         {
+            BlackPawn,
+            BlackKing,
+            WhitePawn,
+            WhiteKing,
+        }
+
+        private readonly Timer r_Timer;
+        private PictureBox m_Picture;
+
+        public CheckersButton(eSoldierType i_SoldierType, bool is_Active)
+        {
+            
         }
     }
 }
