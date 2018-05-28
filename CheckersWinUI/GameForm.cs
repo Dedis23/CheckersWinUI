@@ -51,6 +51,10 @@ namespace CheckersWinUI
             {
                 playerTwoName = i_Player2Name.Trim('[', ']');
             }
+            else
+            {
+                playerTwoName = i_Player2Name;
+            }
             r_LogicUnit.CreatePlayerTwo(playerTwoName);
         }
 
