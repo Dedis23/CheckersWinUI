@@ -178,7 +178,7 @@ namespace CheckersWinUI
             bool validSettings = false;
             if (m_Player2NameTextBox.Text == string.Empty || m_Player1NameTextBox.Text == string.Empty)
             {
-                MessageBox.Show("Please enter name for each player.", "Error");
+                MessageBox.Show("Please enter name for each player.", this.Text);
             }
             else
             {

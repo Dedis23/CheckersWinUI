@@ -780,7 +780,7 @@ namespace CheckersLogic
             return m_Forfeit;
         }
 
-        public bool CanEatAgain
+        public bool ExtraHumanTurn
         {
             get
             {
