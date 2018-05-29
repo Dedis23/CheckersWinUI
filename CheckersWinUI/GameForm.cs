@@ -51,15 +51,16 @@ namespace CheckersWinUI
             string playerTwoName = string.Empty;
             if (i_Player2Enable == false)
             {
-                // player vs player
-                r_LogicUnit.Mode = LogicUnit.eGameMode.PlayerVsPlayer;
+
+                // player vs computer
+                r_LogicUnit.InitializeAI();
+                r_LogicUnit.Mode = LogicUnit.eGameMode.PlayerVsComputer;
                 playerTwoName = i_Player2Name.Trim('[', ']');
             }
             else
             {
-                // player vs computer
-                r_LogicUnit.InitializeAI();
-                r_LogicUnit.Mode = LogicUnit.eGameMode.PlayerVsComputer;
+                // player vs player
+                r_LogicUnit.Mode = LogicUnit.eGameMode.PlayerVsPlayer;
                 playerTwoName = i_Player2Name;
             }
             r_LogicUnit.CreatePlayerTwo(playerTwoName);
