@@ -9,12 +9,12 @@ namespace CheckersLogic
 
         private eGameStatus m_Status;
         private eGameMode m_GameMode;
-        private eCurrentShapeTurn m_CurrentPlayerTurn;
+        private eCurrentPlayerTurn m_CurrentPlayerTurn;
         private Player m_PlayerWhite;
         private Player m_PlayerBlack;
         private Board m_Board;
         private AI m_AI;
-        private bool m_CanEatAgain;
+        private bool m_HumanExtraTurn;
         private bool m_EatPlayer;
         private bool m_FirstTurnOfPlayerCanEat;
         private Point m_CurrentPlayerSoldierSaverForExtraTurn;
@@ -33,18 +33,18 @@ namespace CheckersLogic
             PlayerVsComputer,
         }
 
-        public enum eCurrentShapeTurn
+        public enum eCurrentPlayerTurn
         {
-            Circle,
-            Ex,
+            Black,
+            White,
         }
 
         public LogicUnit(int i_BoardSize)
         {
             m_Status = eGameStatus.Initialize;
             m_Board = new Board(i_BoardSize);
-            m_CurrentPlayerTurn = eCurrentShapeTurn.Ex;
-            m_CanEatAgain = false;
+            m_CurrentPlayerTurn = eCurrentPlayerTurn.White;
+            m_HumanExtraTurn = false;
             m_EatPlayer = false;
             m_FirstTurnOfPlayerCanEat = false;
         }
@@ -124,7 +124,7 @@ namespace CheckersLogic
             m_Board.InitializeCoins(PlayerOne, PlayerTwo);
         }
 
-        public eCurrentShapeTurn CurrentTurn
+        public eCurrentPlayerTurn CurrentTurn
         {
             get
             {
@@ -149,10 +149,10 @@ namespace CheckersLogic
                 isValidMove = checkAndPerformIfPlayerCanEatOtherPlayer(playerSign, i_StartingPlayerPoint, i_DestinationPlayerPoint);
             }
 
-            if (!m_CanEatAgain && m_EatPlayer && isValidMove)
+            if (!m_HumanExtraTurn && m_EatPlayer && isValidMove)
             {
                 checkIfPlayerCanEatAgain(ref playerSign, i_DestinationPlayerPoint);
-                if (!m_CanEatAgain)
+                if (!m_HumanExtraTurn)
                 {
                     m_FirstTurnOfPlayerCanEat = false;
                 }
@@ -181,7 +181,7 @@ namespace CheckersLogic
 
             return isValidMove;
         }
-
+/*
         public int FindPlaceOfLetterOnBoard(char i_Letter)
         {
             int countedValueOfLetter;
@@ -196,16 +196,16 @@ namespace CheckersLogic
 
             return countedValueOfLetter;
         }
-
+        */
         private bool validTurnOfPlayer(char i_PlayerSign)
         {
             bool isValidMove = true;
             switch (CurrentTurn)
             {
-                case eCurrentShapeTurn.Ex:
+                case eCurrentPlayerTurn.White:
                     isValidMove = i_PlayerSign == m_Board.PlayerOneSign || i_PlayerSign == m_Board.PlayerOneKingSign;
                     break;
-                case eCurrentShapeTurn.Circle:
+                case eCurrentPlayerTurn.Black:
                     isValidMove = i_PlayerSign == m_Board.PlayerTwoSign || i_PlayerSign == m_Board.PlayerTwoKingSign;
                     break;
                 default:
@@ -252,22 +252,22 @@ namespace CheckersLogic
 
             if (io_PlayerSign == m_Board.PlayerOneSign)
             {
-                m_CanEatAgain = checkIfPlayerOneCanEat(i_DestinationPointOfPlayer.Y, i_DestinationPointOfPlayer.X);
+                m_HumanExtraTurn = checkIfPlayerOneCanEat(i_DestinationPointOfPlayer.Y, i_DestinationPointOfPlayer.X);
             }
             else if (io_PlayerSign == m_Board.PlayerTwoSign)
             {
-                m_CanEatAgain = checkIfPlayerTwoCanEat(i_DestinationPointOfPlayer.Y, i_DestinationPointOfPlayer.X);
+                m_HumanExtraTurn = checkIfPlayerTwoCanEat(i_DestinationPointOfPlayer.Y, i_DestinationPointOfPlayer.X);
             }
             else if (io_PlayerSign == m_Board.PlayerOneKingSign)
             {
-                m_CanEatAgain = checkIfPlayerOneKingCanEat(i_DestinationPointOfPlayer.Y, i_DestinationPointOfPlayer.X);
+                m_HumanExtraTurn = checkIfPlayerOneKingCanEat(i_DestinationPointOfPlayer.Y, i_DestinationPointOfPlayer.X);
             }
             else
             {
-                m_CanEatAgain = checkIfPlayerTwoKingCanEat(i_DestinationPointOfPlayer.Y, i_DestinationPointOfPlayer.X);
+                m_HumanExtraTurn = checkIfPlayerTwoKingCanEat(i_DestinationPointOfPlayer.Y, i_DestinationPointOfPlayer.X);
             }
 
-            if(m_CanEatAgain)
+            if(m_HumanExtraTurn)
             {
                 m_CurrentPlayerSoldierSaverForExtraTurn = i_DestinationPointOfPlayer;
             }
@@ -520,11 +520,11 @@ namespace CheckersLogic
                 m_FirstTurnOfPlayerCanEat = checkIfPlayerFirstTurnCanEat(i_PlayerSign, i_StartingPointOfPlayer);
             }
 
-            if (m_CanEatAgain || m_FirstTurnOfPlayerCanEat)
+            if (m_HumanExtraTurn || m_FirstTurnOfPlayerCanEat)
             {
                 isValidMove = checkIfDestinationIsAValidEatingMove(i_PlayerSign, i_StartingPointOfPlayer, i_DestinationPointOfPlayer);
 
-                if (m_CanEatAgain && isValidMove)
+                if (m_HumanExtraTurn && isValidMove)
                 {
                     isValidMove = checkIfValidExtraTurnEatingMove(i_PlayerSign, i_DestinationPointOfPlayer);
                 }
@@ -532,7 +532,7 @@ namespace CheckersLogic
                 if (isValidMove)
                 {
                     m_EatPlayer = true;
-                    m_CanEatAgain = false;
+                    m_HumanExtraTurn = false;
                 }
             }
 
@@ -758,14 +758,14 @@ namespace CheckersLogic
             bool isValidForFeit = false;
             switch (CurrentTurn)
             {
-                case eCurrentShapeTurn.Circle:
+                case eCurrentPlayerTurn.Black:
                     if (PlayerTwo.Coins < PlayerOne.Coins)
                     {
                         isValidForFeit = true;
                     }
 
                     break;
-                case eCurrentShapeTurn.Ex:
+                case eCurrentPlayerTurn.White:
                     if (PlayerOne.Coins < PlayerTwo.Coins)
                     {
                         isValidForFeit = true;
@@ -783,7 +783,7 @@ namespace CheckersLogic
         {
             get
             {
-                return m_CanEatAgain;
+                return m_HumanExtraTurn;
             }
         }
 
@@ -1119,7 +1119,7 @@ namespace CheckersLogic
             bool isCurrentPlayerWon = false;
             switch (CurrentTurn)
             {
-                case eCurrentShapeTurn.Circle:
+                case eCurrentPlayerTurn.Black:
                     if (PlayerOne.Coins == 0 || PlayerOne.HasMoves == false)
                     {   // Circle wins if ex coins is 0 or ex has no more valid moves
                         PlayerTwo.Score++;
@@ -1128,7 +1128,7 @@ namespace CheckersLogic
                     }
 
                     break;
-                case eCurrentShapeTurn.Ex:
+                case eCurrentPlayerTurn.White:
                     if (PlayerTwo.Coins == 0 || PlayerTwo.HasMoves == false)
                     {   // Ex wins if circle coins is 0 or ex has no more valid moves
                         PlayerOne.Score++;
@@ -1151,11 +1151,11 @@ namespace CheckersLogic
             {
                 switch (CurrentTurn)
                 {
-                    case eCurrentShapeTurn.Circle:
+                    case eCurrentPlayerTurn.Black:
                         PlayerOne.Score++;
                         Status = eGameStatus.EndOfRound;
                         break;
-                    case eCurrentShapeTurn.Ex:
+                    case eCurrentPlayerTurn.White:
                         PlayerTwo.Score++;
                         Status = eGameStatus.EndOfRound;
                         break;
@@ -1172,8 +1172,8 @@ namespace CheckersLogic
             m_PlayerBlack.Reset();
             InitializeCoins();
             m_Board.BuildBoard();
-            m_CurrentPlayerTurn = eCurrentShapeTurn.Ex;
-            m_CanEatAgain = false;
+            m_CurrentPlayerTurn = eCurrentPlayerTurn.White;
+            m_HumanExtraTurn = false;
             m_EatPlayer = false;
             m_FirstTurnOfPlayerCanEat = false;
             Status = eGameStatus.Play;
@@ -1183,11 +1183,11 @@ namespace CheckersLogic
         {
             switch (CurrentTurn)
             {
-                case eCurrentShapeTurn.Circle:
-                    m_CurrentPlayerTurn = eCurrentShapeTurn.Ex;
+                case eCurrentPlayerTurn.Black:
+                    m_CurrentPlayerTurn = eCurrentPlayerTurn.White;
                     break;
-                case eCurrentShapeTurn.Ex:
-                    m_CurrentPlayerTurn = eCurrentShapeTurn.Circle;
+                case eCurrentPlayerTurn.White:
+                    m_CurrentPlayerTurn = eCurrentPlayerTurn.Black;
                     break;
                 default:
                     break;
