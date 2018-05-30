@@ -28,6 +28,7 @@ namespace CheckersWinUI
         private readonly List<BoardSquare> r_CheckersBoard;
         private Label m_Player1Label;
         private Label m_Player2Label;
+        private Button m_ForfeitButton;
         private BoardSquare m_ActiveSquare;
 
         public GameForm(int i_BoardSize, bool i_Player2Enable, string i_Player1Name, string i_Player2Name)
@@ -42,23 +43,6 @@ namespace CheckersWinUI
             initializeLogicUnit(i_Player2Enable, i_Player1Name, i_Player2Name);
             r_CheckersBoard = new List<BoardSquare>(i_BoardSize * i_BoardSize);
             createGameFrame(i_BoardSize);
-            this.FormClosing += gameForm_FormClosed;
-        }
-
-        private void gameForm_FormClosed(object sender, FormClosingEventArgs e)
-        {
-            // when user want to close the game, we check if he can forfeit the game or not
-            bool isCurrentPlayerForfeit = r_LogicUnit.CheckIfCurrentPlayerForfeit();
-            if (isCurrentPlayerForfeit == true)
-            {
-                currentPlayerForfeitMessageBox();
-                initializeRematch();
-            }
-            else
-            {
-                MessageBox.Show("Current player cannot forfeit!", this.Text);
-                e.Cancel = true;
-            }
         }
 
         private void initializeLogicUnit(bool i_Player2Enable, string i_Player1Name, string i_Player2Name)
@@ -93,23 +77,33 @@ namespace CheckersWinUI
 
         private void buildPlayersScoreBar(int i_BoardSize)
         {
+            // Forfeit button
+            m_ForfeitButton = new Button();
+            m_ForfeitButton.Text = "Forfeit";
+            m_ForfeitButton.Top = 15;
+            m_ForfeitButton.Left = 15;
+            m_ForfeitButton.AutoSize = true;
+            m_ForfeitButton.Click += forfeitButton_Click;
+
+            // Player1 Label
             StringBuilder player1TextLabel = new StringBuilder(r_LogicUnit.PlayerOne.Name);
             player1TextLabel.Append(": ");
             player1TextLabel.Append(r_LogicUnit.PlayerOne.Score.ToString());
-
-            // Player1 Label
             m_Player1Label = new Label();
             m_Player1Label.Text = player1TextLabel.ToString();
-            m_Player1Label.Font = new Font("Arial", 9, FontStyle.Bold);
+            m_Player1Label.Font = new Font("Consolas", 9, FontStyle.Bold);
             m_Player1Label.ForeColor = Color.Black;
             m_Player1Label.Top = 15;
-            m_Player1Label.Left = 60 + (i_BoardSize - 6) * 20;
+            m_Player1Label.AutoSize = false;
+            m_Player1Label.BackColor = Color.Red;
+            m_Player1Label.Left = m_ForfeitButton.Right;
+            m_Player1Label.TextAlign = ContentAlignment.MiddleLeft;
 
+            // Player2 Label
             StringBuilder player2TextLabel = new StringBuilder(r_LogicUnit.PlayerTwo.Name);
             player2TextLabel.Append(": ");
             player2TextLabel.Append(r_LogicUnit.PlayerTwo.Score.ToString());
 
-            // Player2 Label
             m_Player2Label = new Label();
             m_Player2Label.Text = player2TextLabel.ToString();
             m_Player2Label.Font = new Font("Arial", 9, FontStyle.Bold);
@@ -117,9 +111,29 @@ namespace CheckersWinUI
             m_Player2Label.Top = 15;
             m_Player2Label.Left = m_Player1Label.Left + 120;
 
+            //this.Controls.Add(m_ForfeitButton);
             this.Controls.Add(m_Player2Label);
             this.Controls.Add(m_Player1Label);
+        }
 
+        private void forfeitButton_Click(object sender, EventArgs e)
+        {
+            bool isCurrentPlayerForfeit = r_LogicUnit.CheckIfCurrentPlayerForfeit();
+            if (isCurrentPlayerForfeit == true)
+            {
+                if (currentPlayerForfeitMessageBox() == true)
+                {
+                    initializeRematch();
+                }
+                else
+                {
+                    this.Close();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Current player cannot forfeit!", this.Text);
+            }
         }
 
         private void buildFrame(int i_BoardSize)
@@ -213,7 +227,6 @@ namespace CheckersWinUI
                     else
                     {
                         // if we got to here, that means the user wanted to make a move
-
                         // Human turn
                         handleHumanTurn(clickedSquare);
 
@@ -262,7 +275,7 @@ namespace CheckersWinUI
                 else
                 {
                     r_LogicUnit.Status = LogicUnit.eGameStatus.Quit;
-                    this.Hide();
+                    this.Close();
                 }
             }
             else
