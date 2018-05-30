@@ -43,6 +43,7 @@ namespace CheckersWinUI
             initializeLogicUnit(i_Player2Enable, i_Player1Name, i_Player2Name);
             r_CheckersBoard = new List<BoardSquare>(i_BoardSize * i_BoardSize);
             createGameFrame(i_BoardSize);
+            this.BackColor = Color.NavajoWhite;
         }
 
         private void initializeLogicUnit(bool i_Player2Enable, string i_Player1Name, string i_Player2Name)
@@ -98,6 +99,7 @@ namespace CheckersWinUI
             m_Player1Label.BackColor = Color.Red;
             m_Player1Label.Left = m_ForfeitButton.Right;
             m_Player1Label.TextAlign = ContentAlignment.MiddleLeft;
+            m_Player1Label.Left = r_CheckersBoard[0].Bounds.Left;
 
             // Player2 Label
             StringBuilder player2TextLabel = new StringBuilder(r_LogicUnit.PlayerTwo.Name);
