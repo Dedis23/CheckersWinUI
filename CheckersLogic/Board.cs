@@ -17,8 +17,8 @@
         private const char k_PlayerTwoSign = 'O';
         private const char k_PlayerOneKingSign = 'K';
         private const char k_PlayerTwoKingSign = 'U';
-        private int m_BoardSize;
         private readonly char[,] r_GameBoard;
+        private int m_BoardSize;
 
         public Board(int i_BoardSize)
         {

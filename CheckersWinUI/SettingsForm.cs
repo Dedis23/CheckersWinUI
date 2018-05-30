@@ -28,6 +28,7 @@ namespace CheckersWinUI
             this.Text = "Game Settings";
             this.ShowIcon = false;
             this.m_IsValidSettings = false;
+            this.BackColor = Color.MediumTurquoise;
             buildInnerForms();
         }
 
@@ -97,6 +98,7 @@ namespace CheckersWinUI
             m_Player1NameTextBox.Width = 130;
             m_Player1NameTextBox.Top = 130;
             m_Player1NameTextBox.Left = 140;
+            m_Player1NameTextBox.MaxLength = 10;
             this.Controls.Add(m_Player1NameTextBox);
 
             // Player2 CheckBox
@@ -109,13 +111,14 @@ namespace CheckersWinUI
             m_Player2CheckBox.CheckedChanged += new EventHandler(player2CheckBox_CheckedChanged);
             this.Controls.Add(m_Player2CheckBox);
 
-            // Player1 Name TextBox
+            // Player2 Name TextBox
             m_Player2NameTextBox = new TextBox();
             m_Player2NameTextBox.Text = "[Computer]";
             m_Player2NameTextBox.Enabled = false;
             m_Player2NameTextBox.Width = 130;
             m_Player2NameTextBox.Top = 160;
             m_Player2NameTextBox.Left = 140;
+            m_Player2NameTextBox.MaxLength = 10;
             this.Controls.Add(m_Player2NameTextBox);
 
             // Done Button
@@ -125,6 +128,9 @@ namespace CheckersWinUI
             m_DoneButton.ForeColor = Color.Black;
             m_DoneButton.Top = 200;
             m_DoneButton.Left = 175;
+            m_DoneButton.TextAlign = ContentAlignment.MiddleCenter;
+            m_DoneButton.BackColor = Color.Transparent;
+            m_DoneButton.FlatStyle = FlatStyle.Flat;
             m_DoneButton.Click += new EventHandler(doneButton_Clicked);
             this.Controls.Add(m_DoneButton);
         }
@@ -184,6 +190,7 @@ namespace CheckersWinUI
             {
                 validSettings = true;
             }
+
             return validSettings;
         }
 

@@ -181,22 +181,7 @@ namespace CheckersLogic
 
             return isValidMove;
         }
-/*
-        public int FindPlaceOfLetterOnBoard(char i_Letter)
-        {
-            int countedValueOfLetter;
-            if (i_Letter >= m_Board.FirstUpperCaseFrame && i_Letter <= m_Board.LastUpperCaseFrame)
-            {
-                countedValueOfLetter = i_Letter - m_Board.FirstUpperCaseFrame;
-            }
-            else
-            {
-                countedValueOfLetter = i_Letter - m_Board.FirstLowerCaseFrame;
-            }
 
-            return countedValueOfLetter;
-        }
-        */
         private bool validTurnOfPlayer(char i_PlayerSign)
         {
             bool isValidMove = true;
@@ -1163,6 +1148,7 @@ namespace CheckersLogic
                         break;
                 }
             }
+
             return isCurrentPlayerForfeit;
         }
 

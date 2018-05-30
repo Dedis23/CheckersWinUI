@@ -1,9 +1,9 @@
-﻿using System;
+﻿using System.Text;
+using System.Drawing;
+using System.Collections.Generic;
+using System;
 using System.Windows.Forms;
 using CheckersLogic;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
 
 namespace CheckersWinUI
 {
@@ -64,6 +64,7 @@ namespace CheckersWinUI
                 r_LogicUnit.Mode = LogicUnit.eGameMode.PlayerVsPlayer;
                 playerTwoName = i_Player2Name;
             }
+
             r_LogicUnit.CreatePlayerTwo(playerTwoName);
             r_LogicUnit.InitializeCoins();
             r_LogicUnit.Status = LogicUnit.eGameStatus.Play;
@@ -98,9 +99,9 @@ namespace CheckersWinUI
             m_ForfeitButton.AutoSize = true;
             m_ForfeitButton.Click += forfeitButton_Click;
             m_ForfeitButton.TextAlign = ContentAlignment.MiddleCenter;
-            m_ForfeitButton.BackColor = Color.Transparent;          
+            m_ForfeitButton.BackColor = Color.Transparent;
             m_ForfeitButton.FlatStyle = FlatStyle.Flat;
-            m_ForfeitButton.Left = r_CheckersBoard[r_LogicUnit.Board.Size/2].Bounds.Left - m_ForfeitButton.Width/2;
+            m_ForfeitButton.Left = r_CheckersBoard[r_LogicUnit.Board.Size / 2].Bounds.Left - (m_ForfeitButton.Width / 2);
 
             // Player2 Label
             StringBuilder player2TextLabel = new StringBuilder(r_LogicUnit.PlayerTwo.Name);
@@ -168,30 +169,30 @@ namespace CheckersWinUI
             {
                 for (int col = 0; col < i_BoardSize; col++)
                 {
-                    if (row % 2 == 0 && col % 2 == 0 || row % 2 == 1 && col % 2 == 1)
+                    if ((row % 2 == 0 && col % 2 == 0) || (row % 2 == 1 && col % 2 == 1))
                     {
                         r_CheckersBoard.Add(new BoardSquare(BoardSquare.eBoardSquareType.None, false, row, col));
-                        this.Controls.Add(r_CheckersBoard[row * i_BoardSize + col]);
+                        this.Controls.Add(r_CheckersBoard[(row * i_BoardSize) + col]);
                     }
-                    else if (row < i_BoardSize / 2 - 1 && (row % 2 == 0 && col % 2 == 1 || row % 2 == 1 && col % 2 == 0))
+                    else if ((row < (i_BoardSize / 2) - 1) && ((row % 2 == 0 && col % 2 == 1) || (row % 2 == 1 && col % 2 == 0)))
                     {
                         r_CheckersBoard.Add(new BoardSquare(BoardSquare.eBoardSquareType.BlackPawn, true, row, col));
-                        this.Controls.Add(r_CheckersBoard[row * i_BoardSize + col]);
+                        this.Controls.Add(r_CheckersBoard[(row * i_BoardSize) + col]);
                     }
-                    else if (row >= i_BoardSize / 2 + 1 && (row % 2 == 0 && col % 2 == 1 || row % 2 == 1 && col % 2 == 0))
+                    else if ((row >= (i_BoardSize / 2) + 1) && ((row % 2 == 0 && col % 2 == 1) || (row % 2 == 1 && col % 2 == 0)))
                     {
                         r_CheckersBoard.Add(new BoardSquare(BoardSquare.eBoardSquareType.WhitePawn, true, row, col));
-                        this.Controls.Add(r_CheckersBoard[row * i_BoardSize + col]);
+                        this.Controls.Add(r_CheckersBoard[(row * i_BoardSize) + col]);
                     }
                     else
                     {
                         r_CheckersBoard.Add(new BoardSquare(BoardSquare.eBoardSquareType.None, true, row, col));
-                        this.Controls.Add(r_CheckersBoard[row * i_BoardSize + col]);
+                        this.Controls.Add(r_CheckersBoard[(row * i_BoardSize) + col]);
                     }
 
-                    if (r_CheckersBoard[row * i_BoardSize + col] != null)
+                    if (r_CheckersBoard[(row * i_BoardSize) + col] != null)
                     {
-                        r_CheckersBoard[row * i_BoardSize + col].Click += new EventHandler(boardSquare_Clicked);
+                        r_CheckersBoard[(row * i_BoardSize) + col].Click += new EventHandler(boardSquare_Clicked);
                     }
                 }
             }
@@ -204,9 +205,10 @@ namespace CheckersWinUI
             {
                 for (int col = 0; col < i_BoardSize; col++)
                 {
-                    r_CheckersBoard[row * i_BoardSize + col].Top = currentTopCheckersBoard;
-                    r_CheckersBoard[row * i_BoardSize + col].Left = currentLeftCheckersBoard + col * widthOfCheckersSoldier;
+                    r_CheckersBoard[(row * i_BoardSize) + col].Top = currentTopCheckersBoard;
+                    r_CheckersBoard[(row * i_BoardSize) + col].Left = currentLeftCheckersBoard + (col * widthOfCheckersSoldier);
                 }
+
                 currentTopCheckersBoard = currentTopCheckersBoard + heightOfCheckersSoldier;
             }
         }
@@ -271,6 +273,7 @@ namespace CheckersWinUI
                     isAnotherRound = currentPlayerWonMessageBox();
                 }
             }
+
             if (r_LogicUnit.Status == LogicUnit.eGameStatus.EndOfRound)
             {   // if the round is over, check for rematch
                 if (isAnotherRound == true)
@@ -321,6 +324,7 @@ MessageBoxIcon.Information) == DialogResult.Yes)
             {
                 isAnotherRound = true;
             }
+
             return isAnotherRound;
         }
 
@@ -348,6 +352,7 @@ MessageBoxIcon.Information) == DialogResult.Yes)
             {
                 isAnotherRound = true;
             }
+
             return isAnotherRound;
         }
 
@@ -389,11 +394,14 @@ MessageBoxIcon.Information) == DialogResult.Yes)
             }
             else
             {
-                MessageBox.Show(@"Invalid move!
-Please try again.", this.Text);
+                MessageBox.Show(
+@"Invalid move!
+Please try again.",
+this.Text);
                 m_ActiveSquare.SetInActive();
                 m_ActiveSquare = null;
             }
+
             return isValidTurn;
         }
 
@@ -404,6 +412,7 @@ Please try again.", this.Text);
             {
                 switchTurns = true;
             }
+
             if (switchTurns == true)
             {
                 r_LogicUnit.SwitchTurns();
@@ -434,6 +443,7 @@ Please try again.", this.Text);
             {
                 isAnotherRound = true;
             }
+
             return isAnotherRound;
         }
 
@@ -445,26 +455,27 @@ Please try again.", this.Text);
                 {
                     if (r_LogicUnit.Board.GameBoard[rows, cols] == r_LogicUnit.Board.PlayerOneSign)
                     {
-                        r_CheckersBoard[rows * r_LogicUnit.Board.Size + cols].SetSquareImage(BoardSquare.eBoardSquareType.WhitePawn);
+                        r_CheckersBoard[(rows * r_LogicUnit.Board.Size) + cols].SetSquareImage(BoardSquare.eBoardSquareType.WhitePawn);
                     }
                     else if (r_LogicUnit.Board.GameBoard[rows, cols] == r_LogicUnit.Board.PlayerOneKingSign)
                     {
-                        r_CheckersBoard[rows * r_LogicUnit.Board.Size + cols].SetSquareImage(BoardSquare.eBoardSquareType.WhiteKing);
+                        r_CheckersBoard[(rows * r_LogicUnit.Board.Size) + cols].SetSquareImage(BoardSquare.eBoardSquareType.WhiteKing);
                     }
                     else if (r_LogicUnit.Board.GameBoard[rows, cols] == r_LogicUnit.Board.PlayerTwoSign)
                     {
-                        r_CheckersBoard[rows * r_LogicUnit.Board.Size + cols].SetSquareImage(BoardSquare.eBoardSquareType.BlackPawn);
+                        r_CheckersBoard[(rows * r_LogicUnit.Board.Size) + cols].SetSquareImage(BoardSquare.eBoardSquareType.BlackPawn);
                     }
                     else if (r_LogicUnit.Board.GameBoard[rows, cols] == r_LogicUnit.Board.PlayerTwoKingSign)
                     {
-                        r_CheckersBoard[rows * r_LogicUnit.Board.Size + cols].SetSquareImage(BoardSquare.eBoardSquareType.BlackKing);
+                        r_CheckersBoard[(rows * r_LogicUnit.Board.Size) + cols].SetSquareImage(BoardSquare.eBoardSquareType.BlackKing);
                     }
                     else
                     {
-                        r_CheckersBoard[rows * r_LogicUnit.Board.Size + cols].SetSquareImage(BoardSquare.eBoardSquareType.None);
+                        r_CheckersBoard[(rows * r_LogicUnit.Board.Size) + cols].SetSquareImage(BoardSquare.eBoardSquareType.None);
                     }
                 }
             }
+
             if (m_ActiveSquare != null)
             {
                 m_ActiveSquare.SetInActive();
