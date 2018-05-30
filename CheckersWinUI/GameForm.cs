@@ -218,7 +218,7 @@ namespace CheckersWinUI
                         handleHumanTurn(clickedSquare);
 
                         // Computer turn
-                        if (r_LogicUnit.Mode == LogicUnit.eGameMode.PlayerVsComputer && r_LogicUnit.CurrentTurn == LogicUnit.eCurrentShapeTurn.Circle)
+                        if (r_LogicUnit.Mode == LogicUnit.eGameMode.PlayerVsComputer && r_LogicUnit.CurrentTurn == LogicUnit.eCurrentPlayerTurn.Black)
                         {   // if we are in player vs computer mode, and its the computer turn, make an AI move
                             bool continueComputerTurn = true;
                             while (continueComputerTurn == true)
@@ -312,10 +312,10 @@ MessageBoxIcon.Information) == DialogResult.Yes)
             string currentPlayerName = string.Empty;
             switch (r_LogicUnit.CurrentTurn)
             {
-                case LogicUnit.eCurrentShapeTurn.Circle:
+                case LogicUnit.eCurrentPlayerTurn.Black:
                     currentPlayerName = r_LogicUnit.PlayerTwo.Name;
                     break;
-                case LogicUnit.eCurrentShapeTurn.Ex:
+                case LogicUnit.eCurrentPlayerTurn.White:
                     currentPlayerName = r_LogicUnit.PlayerOne.Name;
                     break;
                 default:
@@ -398,10 +398,10 @@ Please try again.", this.Text);
             string playerThatWonName = string.Empty;
             switch (r_LogicUnit.CurrentTurn)
             {
-                case LogicUnit.eCurrentShapeTurn.Circle:
+                case LogicUnit.eCurrentPlayerTurn.Black:
                     playerThatWonName = r_LogicUnit.PlayerOne.Name;
                     break;
-                case LogicUnit.eCurrentShapeTurn.Ex:
+                case LogicUnit.eCurrentPlayerTurn.White:
                     playerThatWonName = r_LogicUnit.PlayerTwo.Name;
                     break;
                 default:
