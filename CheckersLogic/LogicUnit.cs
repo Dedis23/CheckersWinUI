@@ -9,9 +9,9 @@ namespace CheckersLogic
 
         private eGameStatus m_Status;
         private eGameMode m_GameMode;
-        private eCurrentShapeTurn m_CurrentShapeTurn;
-        private Player m_PlayerOne;
-        private Player m_PlayerTwo;
+        private eCurrentShapeTurn m_CurrentPlayerTurn;
+        private Player m_PlayerWhite;
+        private Player m_PlayerBlack;
         private Board m_Board;
         private AI m_AI;
         private bool m_CanEatAgain;
@@ -43,7 +43,7 @@ namespace CheckersLogic
         {
             m_Status = eGameStatus.Initialize;
             m_Board = new Board(i_BoardSize);
-            m_CurrentShapeTurn = eCurrentShapeTurn.Ex;
+            m_CurrentPlayerTurn = eCurrentShapeTurn.Ex;
             m_CanEatAgain = false;
             m_EatPlayer = false;
             m_FirstTurnOfPlayerCanEat = false;
@@ -53,7 +53,7 @@ namespace CheckersLogic
         {
             get
             {
-                return m_PlayerOne;
+                return m_PlayerWhite;
             }
         }
 
@@ -61,13 +61,13 @@ namespace CheckersLogic
         {
             get
             {
-                return m_PlayerTwo;
+                return m_PlayerBlack;
             }
         }
 
         public void CreatePlayerOne(string i_Name)
         {
-            m_PlayerOne = new Player(i_Name, m_Board.PlayerOneSign);
+            m_PlayerWhite = new Player(i_Name, m_Board.PlayerOneSign);
         }
 
         public Board Board
@@ -103,7 +103,7 @@ namespace CheckersLogic
 
         public void CreatePlayerTwo(string i_Name)
         {
-            m_PlayerTwo = new Player(i_Name, m_Board.PlayerTwoSign);
+            m_PlayerBlack = new Player(i_Name, m_Board.PlayerTwoSign);
         }
 
         public eGameStatus Status
@@ -128,7 +128,7 @@ namespace CheckersLogic
         {
             get
             {
-                return m_CurrentShapeTurn;
+                return m_CurrentPlayerTurn;
             }
         }
 
@@ -1103,10 +1103,10 @@ namespace CheckersLogic
         public bool CheckForATie()
         {
             bool isItATie = false;
-            if (PlayerOne.HasMoves == false && m_PlayerTwo.HasMoves == false)
+            if (PlayerOne.HasMoves == false && m_PlayerBlack.HasMoves == false)
             {   // no more moves, its a tie
-                m_PlayerOne.Score++;
-                m_PlayerTwo.Score++;
+                m_PlayerWhite.Score++;
+                m_PlayerBlack.Score++;
                 m_Status = eGameStatus.EndOfRound;
                 isItATie = true;
             }
@@ -1168,11 +1168,11 @@ namespace CheckersLogic
 
         public void InitializeRematch()
         {
-            m_PlayerOne.Reset();
-            m_PlayerTwo.Reset();
+            m_PlayerWhite.Reset();
+            m_PlayerBlack.Reset();
             InitializeCoins();
             m_Board.BuildBoard();
-            m_CurrentShapeTurn = eCurrentShapeTurn.Ex;
+            m_CurrentPlayerTurn = eCurrentShapeTurn.Ex;
             m_CanEatAgain = false;
             m_EatPlayer = false;
             m_FirstTurnOfPlayerCanEat = false;
@@ -1184,10 +1184,10 @@ namespace CheckersLogic
             switch (CurrentTurn)
             {
                 case eCurrentShapeTurn.Circle:
-                    m_CurrentShapeTurn = eCurrentShapeTurn.Ex;
+                    m_CurrentPlayerTurn = eCurrentShapeTurn.Ex;
                     break;
                 case eCurrentShapeTurn.Ex:
-                    m_CurrentShapeTurn = eCurrentShapeTurn.Circle;
+                    m_CurrentPlayerTurn = eCurrentShapeTurn.Circle;
                     break;
                 default:
                     break;
