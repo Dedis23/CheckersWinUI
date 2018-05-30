@@ -42,6 +42,23 @@ namespace CheckersWinUI
             initializeLogicUnit(i_Player2Enable, i_Player1Name, i_Player2Name);
             r_CheckersBoard = new List<BoardSquare>(i_BoardSize * i_BoardSize);
             createGameFrame(i_BoardSize);
+            this.FormClosing += gameForm_FormClosed;
+        }
+
+        private void gameForm_FormClosed(object sender, FormClosingEventArgs e)
+        {
+            // when user want to close the game, we check if he can forfeit the game or not
+            bool isCurrentPlayerForfeit = r_LogicUnit.CheckIfCurrentPlayerForfeit();
+            if (isCurrentPlayerForfeit == true)
+            {
+                currentPlayerForfeitMessageBox();
+                initializeRematch();
+            }
+            else
+            {
+                MessageBox.Show("Current player cannot forfeit!", this.Text);
+                e.Cancel = true;
+            }
         }
 
         private void initializeLogicUnit(bool i_Player2Enable, string i_Player1Name, string i_Player2Name)
@@ -51,7 +68,6 @@ namespace CheckersWinUI
             string playerTwoName = string.Empty;
             if (i_Player2Enable == false)
             {
-
                 // player vs computer
                 r_LogicUnit.InitializeAI();
                 r_LogicUnit.Mode = LogicUnit.eGameMode.PlayerVsComputer;
@@ -185,7 +201,7 @@ namespace CheckersWinUI
                 {   // board has no active square
                     clickedSquare.SetActive();
                     m_ActiveSquare = clickedSquare;
-                }   
+                }
                 else if (m_ActiveSquare != null)
                 {
                     // board has an active square, check if its a move or we click on the same square again to inactive
@@ -230,15 +246,6 @@ namespace CheckersWinUI
             }
             else
             {
-                // TO DO THIS (GUY RONEN DIDNT EXPLAIN IF FORFEIT STILL EXIST (Q) NEED TO ASK HIM)
-                /* 
-                bool isCurrentPlayerForfeit = r_LogicUnit.CheckIfCurrentPlayerForfeit();
-                if (isCurrentPlayerForfeit == true)
-                {   // check if current player lost because he wanted to forfeit or he has no more moves
-                    displayCurrentPlayerForfeitScreen();
-                    displayCurrentScoresScreen();
-                }*/
-
                 bool isCurrentPlayerWon = r_LogicUnit.CheckIfCurrentPlayerWon();
                 if (isCurrentPlayerWon == true)
                 {
@@ -250,9 +257,7 @@ namespace CheckersWinUI
             {   // if the round is over, check for rematch
                 if (isAnotherRound == true)
                 {
-                    r_LogicUnit.InitializeRematch();
-                    updateBoardGraphics();
-                    updateScoreLabels();
+                    initializeRematch();
                 }
                 else
                 {
@@ -265,6 +270,13 @@ namespace CheckersWinUI
                 // switch turns
                 switchTurns();
             }
+        }
+
+        private void initializeRematch()
+        {
+            r_LogicUnit.InitializeRematch();
+            updateBoardGraphics();
+            updateScoreLabels();
         }
 
         private void updateScoreLabels()
@@ -314,7 +326,7 @@ MessageBoxIcon.Information) == DialogResult.Yes)
             messageBoxMsg.Append(" has won!");
             messageBoxMsg.AppendLine();
             messageBoxMsg.Append("Another round?");
-            if (MessageBox.Show(messageBoxMsg.ToString(),this.Text,MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+            if (MessageBox.Show(messageBoxMsg.ToString(), this.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
             {
                 isAnotherRound = true;
             }
@@ -378,6 +390,33 @@ Please try again.", this.Text);
             {
                 r_LogicUnit.SwitchTurns();
             }
+        }
+
+        private bool currentPlayerForfeitMessageBox()
+        {
+            bool isAnotherRound = false;
+            string playerThatWonName = string.Empty;
+            switch (r_LogicUnit.CurrentTurn)
+            {
+                case LogicUnit.eCurrentShapeTurn.Circle:
+                    playerThatWonName = r_LogicUnit.PlayerOne.Name;
+                    break;
+                case LogicUnit.eCurrentShapeTurn.Ex:
+                    playerThatWonName = r_LogicUnit.PlayerTwo.Name;
+                    break;
+                default:
+                    break;
+            }
+
+            StringBuilder messageBoxMsg = new StringBuilder(playerThatWonName);
+            messageBoxMsg.Append(" has won!");
+            messageBoxMsg.AppendLine();
+            messageBoxMsg.Append("Another round?");
+            if (MessageBox.Show(messageBoxMsg.ToString(), this.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+            {
+                isAnotherRound = true;
+            }
+            return isAnotherRound;
         }
 
         private void updateBoardGraphics()

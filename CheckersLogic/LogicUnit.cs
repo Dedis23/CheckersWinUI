@@ -15,7 +15,6 @@ namespace CheckersLogic
         private Board m_Board;
         private AI m_AI;
         private bool m_CanEatAgain;
-        private bool m_Forfeit;
         private bool m_EatPlayer;
         private bool m_FirstTurnOfPlayerCanEat;
         private Point m_CurrentPlayerSoldierSaverForExtraTurn;
@@ -45,7 +44,6 @@ namespace CheckersLogic
             m_Status = eGameStatus.Initialize;
             m_Board = new Board(i_BoardSize);
             m_CurrentShapeTurn = eCurrentShapeTurn.Ex;
-            m_Forfeit = false;
             m_CanEatAgain = false;
             m_EatPlayer = false;
             m_FirstTurnOfPlayerCanEat = false;
@@ -755,21 +753,22 @@ namespace CheckersLogic
             }
         }
 
-        public bool CheckIfValidForfeit()
+        private bool checkIfValidForfeit()
         {
+            bool isValidForFeit = false;
             switch (CurrentTurn)
             {
                 case eCurrentShapeTurn.Circle:
                     if (PlayerTwo.Coins < PlayerOne.Coins)
                     {
-                        m_Forfeit = true;
+                        isValidForFeit = true;
                     }
 
                     break;
                 case eCurrentShapeTurn.Ex:
                     if (PlayerOne.Coins < PlayerTwo.Coins)
                     {
-                        m_Forfeit = true;
+                        isValidForFeit = true;
                     }
 
                     break;
@@ -777,7 +776,7 @@ namespace CheckersLogic
                     break;
             }
 
-            return m_Forfeit;
+            return isValidForFeit;
         }
 
         public bool ExtraHumanTurn
@@ -1147,31 +1146,23 @@ namespace CheckersLogic
 
         public bool CheckIfCurrentPlayerForfeit()
         {
-            bool isCurrentPlayerForfeit = false;
-            switch (CurrentTurn)
+            bool isCurrentPlayerForfeit = checkIfValidForfeit();
+            if (isCurrentPlayerForfeit)
             {
-                case eCurrentShapeTurn.Circle:
-                    if (m_Forfeit == true)
-                    {
+                switch (CurrentTurn)
+                {
+                    case eCurrentShapeTurn.Circle:
                         PlayerOne.Score++;
-                        isCurrentPlayerForfeit = true;
                         Status = eGameStatus.EndOfRound;
-                    }
-
-                    break;
-                case eCurrentShapeTurn.Ex:
-                    if (m_Forfeit == true)
-                    {
+                        break;
+                    case eCurrentShapeTurn.Ex:
                         PlayerTwo.Score++;
-                        isCurrentPlayerForfeit = true;
                         Status = eGameStatus.EndOfRound;
-                    }
-
-                    break;
-                default:
-                    break;
+                        break;
+                    default:
+                        break;
+                }
             }
-
             return isCurrentPlayerForfeit;
         }
 
@@ -1182,7 +1173,6 @@ namespace CheckersLogic
             InitializeCoins();
             m_Board.BuildBoard();
             m_CurrentShapeTurn = eCurrentShapeTurn.Ex;
-            m_Forfeit = false;
             m_CanEatAgain = false;
             m_EatPlayer = false;
             m_FirstTurnOfPlayerCanEat = false;
