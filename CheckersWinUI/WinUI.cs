@@ -12,7 +12,7 @@
             //if (m_SettingsForm.ValidSettings == true)
             {   // m_SettingsForm.BoardSize, m_SettingsForm.IsHumanPlayer2, m_SettingsForm.Player1Name, m_SettingsForm.Player2Name
                 // (6, false, "player", "computer")
-                m_GameForm = new GameForm(6, false, "player", "computer");
+                m_GameForm = new GameForm(8, false, "player", "Computer");
                 m_GameForm.ShowDialog();
             }
         }

@@ -78,14 +78,6 @@ namespace CheckersWinUI
 
         private void buildPlayersScoreBar(int i_BoardSize)
         {
-            // Forfeit button
-            m_ForfeitButton = new Button();
-            m_ForfeitButton.Text = "Forfeit";
-            m_ForfeitButton.Top = 15;
-            m_ForfeitButton.Left = 15;
-            m_ForfeitButton.AutoSize = true;
-            m_ForfeitButton.Click += forfeitButton_Click;
-
             // Player1 Label
             StringBuilder player1TextLabel = new StringBuilder(r_LogicUnit.PlayerOne.Name);
             player1TextLabel.Append(": ");
@@ -95,25 +87,36 @@ namespace CheckersWinUI
             m_Player1Label.Font = new Font("Consolas", 9, FontStyle.Bold);
             m_Player1Label.ForeColor = Color.Black;
             m_Player1Label.Top = 15;
-            m_Player1Label.AutoSize = false;
-            m_Player1Label.BackColor = Color.Red;
-            m_Player1Label.Left = m_ForfeitButton.Right;
+            m_Player1Label.AutoSize = true;
             m_Player1Label.TextAlign = ContentAlignment.MiddleLeft;
             m_Player1Label.Left = r_CheckersBoard[0].Bounds.Left;
+
+            // Forfeit button
+            m_ForfeitButton = new Button();
+            m_ForfeitButton.Text = "Forfeit";
+            m_ForfeitButton.Top = 10;
+            m_ForfeitButton.AutoSize = true;
+            m_ForfeitButton.Click += forfeitButton_Click;
+            m_ForfeitButton.TextAlign = ContentAlignment.MiddleCenter;
+            m_ForfeitButton.BackColor = Color.Transparent;          
+            m_ForfeitButton.FlatStyle = FlatStyle.Flat;
+            m_ForfeitButton.Left = r_CheckersBoard[r_LogicUnit.Board.Size/2].Bounds.Left - m_ForfeitButton.Width/2;
 
             // Player2 Label
             StringBuilder player2TextLabel = new StringBuilder(r_LogicUnit.PlayerTwo.Name);
             player2TextLabel.Append(": ");
             player2TextLabel.Append(r_LogicUnit.PlayerTwo.Score.ToString());
-
             m_Player2Label = new Label();
             m_Player2Label.Text = player2TextLabel.ToString();
-            m_Player2Label.Font = new Font("Arial", 9, FontStyle.Bold);
+            m_Player2Label.Font = new Font("Consolas", 9, FontStyle.Bold);
             m_Player2Label.ForeColor = Color.Black;
             m_Player2Label.Top = 15;
-            m_Player2Label.Left = m_Player1Label.Left + 120;
+            m_Player2Label.AutoSize = true;
+            m_Player2Label.BackColor = Color.Transparent;
+            m_Player2Label.TextAlign = ContentAlignment.MiddleLeft;
+            m_Player2Label.Left = r_CheckersBoard[r_LogicUnit.Board.Size - 2].Bounds.Left;
 
-            //this.Controls.Add(m_ForfeitButton);
+            this.Controls.Add(m_ForfeitButton);
             this.Controls.Add(m_Player2Label);
             this.Controls.Add(m_Player1Label);
         }
