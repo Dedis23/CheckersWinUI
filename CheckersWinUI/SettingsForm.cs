@@ -28,7 +28,7 @@ namespace CheckersWinUI
             this.Text = "Game Settings";
             this.ShowIcon = false;
             this.m_IsValidSettings = false;
-            this.BackColor = Color.MediumTurquoise;
+            this.BackColor = Color.NavajoWhite;
             buildInnerForms();
         }
 
@@ -37,7 +37,7 @@ namespace CheckersWinUI
             // BoardSize Label
             m_BoardSizeLabel = new Label();
             m_BoardSizeLabel.Text = "Board Size:";
-            m_BoardSizeLabel.Font = new Font("Arial", 10, FontStyle.Bold | FontStyle.Underline);
+            m_BoardSizeLabel.Font = new Font("Consolas", 10, FontStyle.Bold | FontStyle.Underline);
             m_BoardSizeLabel.ForeColor = Color.Black;
             m_BoardSizeLabel.Top = 28;
             m_BoardSizeLabel.Left = 20;
@@ -46,7 +46,7 @@ namespace CheckersWinUI
             // RadioButton 10x10
             m_RadioButton10x10 = new RadioButton();
             m_RadioButton10x10.Text = "10 x 10";
-            m_RadioButton10x10.Font = new Font("Arial", 9, FontStyle.Bold);
+            m_RadioButton10x10.Font = new Font("Consolas", 9, FontStyle.Bold);
             m_RadioButton10x10.AutoSize = false;
             m_RadioButton10x10.CheckedChanged += new EventHandler(radioButton10x10_CheckedChanged);
             m_RadioButton10x10.Top = 62;
@@ -56,7 +56,7 @@ namespace CheckersWinUI
             // RadioButton 8x8
             m_RadioButton8x8 = new RadioButton();
             m_RadioButton8x8.Text = "8 x 8";
-            m_RadioButton8x8.Font = new Font("Arial", 9, FontStyle.Bold);
+            m_RadioButton8x8.Font = new Font("Consolas", 9, FontStyle.Bold);
             m_RadioButton8x8.AutoSize = false;
             m_RadioButton8x8.CheckedChanged += new EventHandler(radioButton8x8_CheckedChanged);
             m_RadioButton8x8.Top = 62;
@@ -66,7 +66,7 @@ namespace CheckersWinUI
             // RadioButton 6x6
             m_RadioButton6x6 = new RadioButton();
             m_RadioButton6x6.Text = "6 x 6";
-            m_RadioButton6x6.Font = new Font("Arial", 9, FontStyle.Bold);
+            m_RadioButton6x6.Font = new Font("Consolas", 9, FontStyle.Bold);
             m_RadioButton6x6.AutoSize = false;
             m_RadioButton6x6.Checked = true; // this is for making 6x6 the default size
             m_BoardSize = 6;
@@ -78,7 +78,7 @@ namespace CheckersWinUI
             // Players Label
             m_PlayersLabel = new Label();
             m_PlayersLabel.Text = "Players:";
-            m_PlayersLabel.Font = new Font("Arial", 10, FontStyle.Bold | FontStyle.Underline);
+            m_PlayersLabel.Font = new Font("Consolas", 10, FontStyle.Bold | FontStyle.Underline);
             m_PlayersLabel.ForeColor = Color.Black;
             m_PlayersLabel.Top = 95;
             m_PlayersLabel.Left = 20;
@@ -87,7 +87,7 @@ namespace CheckersWinUI
             // Player1 Label
             m_Player1Label = new Label();
             m_Player1Label.Text = "Player 1:";
-            m_Player1Label.Font = new Font("Arial", 9, FontStyle.Bold);
+            m_Player1Label.Font = new Font("Consolas", 9, FontStyle.Bold);
             m_Player1Label.ForeColor = Color.Black;
             m_Player1Label.Top = 130;
             m_Player1Label.Left = 40;
@@ -98,13 +98,13 @@ namespace CheckersWinUI
             m_Player1NameTextBox.Width = 130;
             m_Player1NameTextBox.Top = 130;
             m_Player1NameTextBox.Left = 140;
-            m_Player1NameTextBox.MaxLength = 10;
+            m_Player1NameTextBox.MaxLength = 8;
             this.Controls.Add(m_Player1NameTextBox);
 
             // Player2 CheckBox
             m_Player2CheckBox = new CheckBox();
             m_Player2CheckBox.Text = "Player 2:";
-            m_Player2CheckBox.Font = new Font("Arial", 9, FontStyle.Bold);
+            m_Player2CheckBox.Font = new Font("Consolas", 9, FontStyle.Bold);
             m_Player2CheckBox.ForeColor = Color.Black;
             m_Player2CheckBox.Top = 160;
             m_Player2CheckBox.Left = 25;
@@ -118,7 +118,7 @@ namespace CheckersWinUI
             m_Player2NameTextBox.Width = 130;
             m_Player2NameTextBox.Top = 160;
             m_Player2NameTextBox.Left = 140;
-            m_Player2NameTextBox.MaxLength = 10;
+            m_Player2NameTextBox.MaxLength = 8;
             this.Controls.Add(m_Player2NameTextBox);
 
             // Done Button
