@@ -26,10 +26,10 @@ namespace CheckersWinUI
         private const int k_IntialBoardLeft = 20;
         private readonly LogicUnit r_LogicUnit;
         private readonly List<BoardSquare> r_CheckersBoard;
-        private Label m_Player1Label;
-        private Label m_Player2Label;
-        private Button m_ForfeitButton;
-        private BoardSquare m_ActiveSquare;
+        private Label labelPlayer1;
+        private Label labelPlayer2;
+        private Button buttonForfeit;
+        private BoardSquare boardSquareActiveSquare;
 
         public GameForm(int i_BoardSize, bool i_Player2Enable, string i_Player1Name, string i_Player2Name)
         {
@@ -38,7 +38,7 @@ namespace CheckersWinUI
             this.MaximizeBox = false;
             this.Text = "Damka";
             this.ShowIcon = false;
-            this.m_ActiveSquare = null;
+            this.boardSquareActiveSquare = null;
             r_LogicUnit = new LogicUnit(i_BoardSize);
             initializeLogicUnit(i_Player2Enable, i_Player1Name, i_Player2Name);
             r_CheckersBoard = new List<BoardSquare>(i_BoardSize * i_BoardSize);
@@ -83,43 +83,42 @@ namespace CheckersWinUI
             StringBuilder player1TextLabel = new StringBuilder(r_LogicUnit.PlayerOne.Name);
             player1TextLabel.Append(": ");
             player1TextLabel.Append(r_LogicUnit.PlayerOne.Score.ToString());
-            m_Player1Label = new Label();
-            m_Player1Label.Text = player1TextLabel.ToString();
-            m_Player1Label.Font = new Font("Consolas", 9, FontStyle.Bold);
-            m_Player1Label.ForeColor = Color.Black;
-            m_Player1Label.Top = 15;
-            m_Player1Label.AutoSize = true;
-            m_Player1Label.TextAlign = ContentAlignment.MiddleLeft;
-            m_Player1Label.Left = r_CheckersBoard[0].Bounds.Left;
+            labelPlayer1 = new Label();
+            labelPlayer1.Text = player1TextLabel.ToString();
+            labelPlayer1.Font = new Font("Consolas", 9, FontStyle.Bold);
+            labelPlayer1.ForeColor = Color.Black;
+            labelPlayer1.Top = 15;
+            labelPlayer1.TextAlign = ContentAlignment.MiddleLeft;
+            labelPlayer1.Left = r_CheckersBoard[0].Bounds.Left;
 
             // Forfeit button
-            m_ForfeitButton = new Button();
-            m_ForfeitButton.Text = "Forfeit";
-            m_ForfeitButton.Top = 10;
-            m_ForfeitButton.AutoSize = true;
-            m_ForfeitButton.Click += forfeitButton_Click;
-            m_ForfeitButton.TextAlign = ContentAlignment.MiddleCenter;
-            m_ForfeitButton.BackColor = Color.Transparent;
-            m_ForfeitButton.FlatStyle = FlatStyle.Flat;
-            m_ForfeitButton.Left = r_CheckersBoard[r_LogicUnit.Board.Size / 2].Bounds.Left - (m_ForfeitButton.Width / 2);
+            buttonForfeit = new Button();
+            buttonForfeit.Text = "Forfeit";
+            buttonForfeit.Top = 10;
+            buttonForfeit.AutoSize = true;
+            buttonForfeit.Click += forfeitButton_Click;
+            buttonForfeit.TextAlign = ContentAlignment.MiddleCenter;
+            buttonForfeit.BackColor = Color.Transparent;
+            buttonForfeit.FlatStyle = FlatStyle.Flat;
+            buttonForfeit.Left = r_CheckersBoard[r_LogicUnit.Board.Size / 2].Bounds.Left - (buttonForfeit.Width / 2);
 
             // Player2 Label
             StringBuilder player2TextLabel = new StringBuilder(r_LogicUnit.PlayerTwo.Name);
             player2TextLabel.Append(": ");
             player2TextLabel.Append(r_LogicUnit.PlayerTwo.Score.ToString());
-            m_Player2Label = new Label();
-            m_Player2Label.Text = player2TextLabel.ToString();
-            m_Player2Label.Font = new Font("Consolas", 9, FontStyle.Bold);
-            m_Player2Label.ForeColor = Color.Black;
-            m_Player2Label.Top = 15;
-            m_Player2Label.AutoSize = true;
-            m_Player2Label.BackColor = Color.Transparent;
-            m_Player2Label.TextAlign = ContentAlignment.MiddleLeft;
-            m_Player2Label.Left = r_CheckersBoard[r_LogicUnit.Board.Size - 2].Bounds.Left;
+            labelPlayer2 = new Label();
+            labelPlayer2.Text = player2TextLabel.ToString();
+            labelPlayer2.Font = new Font("Consolas", 9, FontStyle.Bold);
+            labelPlayer2.ForeColor = Color.Black;
+            labelPlayer2.Top = 15;
+            labelPlayer2.AutoSize = true;
+            labelPlayer2.BackColor = Color.Transparent;
+            labelPlayer2.TextAlign = ContentAlignment.MiddleLeft;
+            labelPlayer2.Left = r_CheckersBoard[r_LogicUnit.Board.Size - 2].Bounds.Left;
 
-            this.Controls.Add(m_ForfeitButton);
-            this.Controls.Add(m_Player2Label);
-            this.Controls.Add(m_Player1Label);
+            this.Controls.Add(buttonForfeit);
+            this.Controls.Add(labelPlayer2);
+            this.Controls.Add(labelPlayer1);
         }
 
         private void forfeitButton_Click(object sender, EventArgs e)
@@ -218,18 +217,18 @@ namespace CheckersWinUI
             BoardSquare clickedSquare = sender as BoardSquare;
             if (clickedSquare.Enabled == true)
             {
-                if (m_ActiveSquare == null && clickedSquare.BoardSquareType != BoardSquare.eBoardSquareType.None)
+                if (boardSquareActiveSquare == null && clickedSquare.BoardSquareType != BoardSquare.eBoardSquareType.None)
                 {   // board has no active square
                     clickedSquare.SetActive();
-                    m_ActiveSquare = clickedSquare;
+                    boardSquareActiveSquare = clickedSquare;
                 }
-                else if (m_ActiveSquare != null)
+                else if (boardSquareActiveSquare != null)
                 {
                     // board has an active square, check if its a move or we click on the same square again to inactive
-                    if (clickedSquare == m_ActiveSquare)
+                    if (clickedSquare == boardSquareActiveSquare)
                     {
                         clickedSquare.SetInActive();
-                        m_ActiveSquare = null;
+                        boardSquareActiveSquare = null;
                     }
                     else
                     {
@@ -250,6 +249,9 @@ namespace CheckersWinUI
                                 }
                             }
                         }
+
+                        // update the boards graphics
+                        updateBoardGraphics();
                     }
                 }
             }
@@ -305,11 +307,11 @@ namespace CheckersWinUI
             StringBuilder player1TextLabel = new StringBuilder(r_LogicUnit.PlayerOne.Name);
             player1TextLabel.Append(": ");
             player1TextLabel.Append(r_LogicUnit.PlayerOne.Score.ToString());
-            m_Player1Label.Text = player1TextLabel.ToString();
+            labelPlayer1.Text = player1TextLabel.ToString();
             StringBuilder player2TextLabel = new StringBuilder(r_LogicUnit.PlayerTwo.Name);
             player2TextLabel.Append(": ");
             player2TextLabel.Append(r_LogicUnit.PlayerTwo.Score.ToString());
-            m_Player2Label.Text = player2TextLabel.ToString();
+            labelPlayer2.Text = player2TextLabel.ToString();
         }
 
         private bool itsATieMessageBox()
@@ -361,9 +363,6 @@ MessageBoxIcon.Information) == DialogResult.Yes)
             // check if the move is legal, if yes preform it
             if (checkIfValidTurnAndPreformIt(i_ClickedSquare.Col, i_ClickedSquare.Row) == true)
             {
-                // update the boards graphics
-                updateBoardGraphics();
-
                 // check if either player has won, lost or its a tie
                 manageTasksBeforeNextTurn();
             }
@@ -376,9 +375,6 @@ MessageBoxIcon.Information) == DialogResult.Yes)
             r_LogicUnit.GetAnAIMove(ref startingComputerPoint, ref destinationComputerPoint); // make an AI move
             r_LogicUnit.PreformMove(startingComputerPoint, destinationComputerPoint); // preform the move (no need to use the returned boolean value because the AI always choose valid moves)
 
-            // after AI turn we update the graphics
-            updateBoardGraphics();
-
             // check if either player has won, lost or its a tie
             manageTasksBeforeNextTurn();
         }
@@ -386,7 +382,7 @@ MessageBoxIcon.Information) == DialogResult.Yes)
         private bool checkIfValidTurnAndPreformIt(int i_ColDestination, int i_RowDestination)
         {
             bool isValidTurn = false;
-            CheckersLogic.Point startingPoint = new CheckersLogic.Point(m_ActiveSquare.Row, m_ActiveSquare.Col);
+            CheckersLogic.Point startingPoint = new CheckersLogic.Point(boardSquareActiveSquare.Row, boardSquareActiveSquare.Col);
             CheckersLogic.Point destinationPoint = new CheckersLogic.Point(i_RowDestination, i_ColDestination);
             if (r_LogicUnit.PreformMove(startingPoint, destinationPoint) == true)
             {
@@ -398,8 +394,8 @@ MessageBoxIcon.Information) == DialogResult.Yes)
 @"Invalid move!
 Please try again.",
 this.Text);
-                m_ActiveSquare.SetInActive();
-                m_ActiveSquare = null;
+                boardSquareActiveSquare.SetInActive();
+                boardSquareActiveSquare = null;
             }
 
             return isValidTurn;
@@ -476,10 +472,10 @@ this.Text);
                 }
             }
 
-            if (m_ActiveSquare != null)
+            if (boardSquareActiveSquare != null)
             {
-                m_ActiveSquare.SetInActive();
-                m_ActiveSquare = null;
+                boardSquareActiveSquare.SetInActive();
+                boardSquareActiveSquare = null;
             }
         }
     }
