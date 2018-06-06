@@ -26,6 +26,7 @@ namespace CheckersWinUI
         private const int k_IntialBoardLeft = 20;
         private readonly LogicUnit r_LogicUnit;
         private readonly List<BoardSquare> r_CheckersBoard;
+        private readonly Timer r_Timer;
         private Label labelPlayer1;
         private Label labelPlayer2;
         private Button buttonForfeit;
@@ -45,6 +46,9 @@ namespace CheckersWinUI
             r_CheckersBoard = new List<BoardSquare>(i_BoardSize * i_BoardSize);
             createGameFrame(i_BoardSize);
             this.BackColor = Color.NavajoWhite;
+            r_Timer = new Timer();
+            r_Timer.Interval = 300;
+            r_Timer.Tick += timerTick;
         }
 
         private void initializeLogicUnit(bool i_Player2Enable, string i_Player1Name, string i_Player2Name)
@@ -252,26 +256,36 @@ namespace CheckersWinUI
                         // if we got to here, that means the user wanted to make a move
                         // Human turn
                         handleHumanTurn(clickedSquare);
-
-                        // Computer turn
-                        if (r_LogicUnit.Mode == LogicUnit.eGameMode.PlayerVsComputer && r_LogicUnit.CurrentTurn == LogicUnit.eCurrentPlayerTurn.Black)
-                        {   // if we are in player vs computer mode, and its the computer turn, make an AI move
-                            bool continueComputerTurn = true;
-                            while (continueComputerTurn == true)
-                            {
-                                handleComputerTurn();
-                                if (r_LogicUnit.ExtraAITurn == false)
-                                {
-                                    continueComputerTurn = false;
-                                }
-                            }
+                        // Initialize the timer before computer turn
+                        if (r_LogicUnit.Mode == LogicUnit.eGameMode.PlayerVsComputer)
+                        {
+                            r_Timer.Start();
                         }
-
                         // update the boards graphics
                         updateBoardGraphics();
                     }
                 }
             }
+        }
+
+        private void timerTick(object sender, EventArgs e)
+        {
+            // Computer turn
+            if (r_LogicUnit.CurrentTurn == LogicUnit.eCurrentPlayerTurn.Black)
+            {   // if we are in player vs computer mode, and its the computer turn, make an AI move
+                bool continueComputerTurn = true;
+                while (continueComputerTurn == true)
+                {
+                    handleComputerTurn();
+                    if (r_LogicUnit.ExtraAITurn == false)
+                    {
+                        continueComputerTurn = false;
+                    }
+                }
+                // update the boards graphics
+                updateBoardGraphics();
+            }
+            r_Timer.Stop();
         }
 
         private void manageTasksBeforeNextTurn()
