@@ -16,11 +16,11 @@ namespace CheckersWinUI
             Large = 10,
         }
 
-        private const int k_HeightSize6x6 = 380;
+        private const int k_HeightSize6x6 = 390;
         private const int k_WidthSize6x6 = 320;
-        private const int k_HeightSize8x8 = 470;
+        private const int k_HeightSize8x8 = 480;
         private const int k_WidthSize8x8 = 410;
-        private const int k_HeightSize10x10 = 560;
+        private const int k_HeightSize10x10 = 570;
         private const int k_WidthSize10x10 = 500;
         private const int k_InitialBoardTop = 50;
         private const int k_IntialBoardLeft = 20;
@@ -29,6 +29,7 @@ namespace CheckersWinUI
         private Label labelPlayer1;
         private Label labelPlayer2;
         private Button buttonForfeit;
+        private Label labelCurrentPlayer;
         private BoardSquare boardSquareActiveSquare;
 
         public GameForm(int i_BoardSize, bool i_Player2Enable, string i_Player1Name, string i_Player2Name)
@@ -74,10 +75,10 @@ namespace CheckersWinUI
         {
             buildFrame(i_BoardSize);
             buildCheckersBoard(i_BoardSize);
-            buildPlayersScoreBar(i_BoardSize);
+            buildStatusBars();
         }
 
-        private void buildPlayersScoreBar(int i_BoardSize)
+        private void buildStatusBars()
         {
             // Player1 Label
             StringBuilder player1TextLabel = new StringBuilder(r_LogicUnit.PlayerOne.Name);
@@ -86,20 +87,22 @@ namespace CheckersWinUI
             labelPlayer1 = new Label();
             labelPlayer1.Text = player1TextLabel.ToString();
             labelPlayer1.Font = new Font("Consolas", 9, FontStyle.Bold);
+            labelPlayer1.AutoSize = true;
             labelPlayer1.ForeColor = Color.Black;
-            labelPlayer1.Top = 15;
+            labelPlayer1.BackColor = Color.Transparent;
             labelPlayer1.TextAlign = ContentAlignment.MiddleLeft;
+            labelPlayer1.Top = r_CheckersBoard[0].Bounds.Top - labelPlayer1.Height - 10;
             labelPlayer1.Left = r_CheckersBoard[0].Bounds.Left;
 
             // Forfeit button
             buttonForfeit = new Button();
             buttonForfeit.Text = "Forfeit";
-            buttonForfeit.Top = 10;
             buttonForfeit.AutoSize = true;
             buttonForfeit.Click += forfeitButton_Click;
             buttonForfeit.TextAlign = ContentAlignment.MiddleCenter;
             buttonForfeit.BackColor = Color.Transparent;
             buttonForfeit.FlatStyle = FlatStyle.Flat;
+            buttonForfeit.Top = r_CheckersBoard[r_LogicUnit.Board.Size / 2].Bounds.Top - buttonForfeit.Height - 15;
             buttonForfeit.Left = r_CheckersBoard[r_LogicUnit.Board.Size / 2].Bounds.Left - (buttonForfeit.Width / 2);
 
             // Player2 Label
@@ -110,15 +113,29 @@ namespace CheckersWinUI
             labelPlayer2.Text = player2TextLabel.ToString();
             labelPlayer2.Font = new Font("Consolas", 9, FontStyle.Bold);
             labelPlayer2.ForeColor = Color.Black;
-            labelPlayer2.Top = 15;
             labelPlayer2.AutoSize = true;
             labelPlayer2.BackColor = Color.Transparent;
             labelPlayer2.TextAlign = ContentAlignment.MiddleLeft;
+            labelPlayer2.Top = r_CheckersBoard[r_LogicUnit.Board.Size - 2].Bounds.Top - labelPlayer2.Height - 10;
             labelPlayer2.Left = r_CheckersBoard[r_LogicUnit.Board.Size - 2].Bounds.Left;
 
+            // Current Player Label
+            StringBuilder labelCurrentPlayerText = new StringBuilder("Current Player: ");
+            labelCurrentPlayerText.Append(r_LogicUnit.PlayerOne.Name);
+            labelCurrentPlayer = new Label();
+            labelCurrentPlayer.Font = new Font("Consolas", 9, FontStyle.Bold);
+            labelCurrentPlayer.ForeColor = Color.Black;
+            labelCurrentPlayer.AutoSize = true;
+            labelCurrentPlayer.BackColor = Color.Transparent;
+            labelCurrentPlayer.TextAlign = ContentAlignment.MiddleLeft;
+            labelCurrentPlayer.Text = labelCurrentPlayerText.ToString();
+            labelCurrentPlayer.Top = r_CheckersBoard[r_LogicUnit.Board.Size * r_LogicUnit.Board.Size - r_LogicUnit.Board.Size - 1].Bounds.Bottom + labelCurrentPlayer.Height + 20;
+            labelCurrentPlayer.Left = r_CheckersBoard[r_LogicUnit.Board.Size * r_LogicUnit.Board.Size - r_LogicUnit.Board.Size].Bounds.Left;
+
+            this.Controls.Add(labelPlayer1);
             this.Controls.Add(buttonForfeit);
             this.Controls.Add(labelPlayer2);
-            this.Controls.Add(labelPlayer1);
+            this.Controls.Add(labelCurrentPlayer);
         }
 
         private void forfeitButton_Click(object sender, EventArgs e)
@@ -314,6 +331,13 @@ namespace CheckersWinUI
             labelPlayer2.Text = player2TextLabel.ToString();
         }
 
+        private void updateCurrentTurnLabel(string i_CurrentPlayerName)
+        {
+            StringBuilder labelCurrentPlayerText = new StringBuilder("Current Player: ");
+            labelCurrentPlayerText.Append(i_CurrentPlayerName);
+            labelCurrentPlayer.Text = labelCurrentPlayerText.ToString();
+        }
+
         private bool itsATieMessageBox()
         {
             bool isAnotherRound = false;
@@ -403,15 +427,22 @@ this.Text);
 
         private void switchTurns()
         {
-            bool switchTurns = false;
             if (r_LogicUnit.ExtraHumanTurn == false)
             {
-                switchTurns = true;
-            }
-
-            if (switchTurns == true)
-            {
                 r_LogicUnit.SwitchTurns();
+                string currentPlayerName = string.Empty;
+                switch (r_LogicUnit.CurrentTurn)
+                {
+                    case LogicUnit.eCurrentPlayerTurn.Black:
+                        currentPlayerName = r_LogicUnit.PlayerTwo.Name;
+                        break;
+                    case LogicUnit.eCurrentPlayerTurn.White:
+                        currentPlayerName = r_LogicUnit.PlayerOne.Name;
+                        break;
+                    default:
+                        break;
+                }
+                updateCurrentTurnLabel(currentPlayerName);
             }
         }
 
