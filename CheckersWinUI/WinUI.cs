@@ -2,17 +2,17 @@
 {
     public class WinUI
     {
-        private SettingsForm m_SettingsForm;
-        private GameForm m_GameForm;
+        private SettingsForm r_SettingsForm;
+        private GameForm r_GameForm;
 
         public void Run()
         {
-           m_SettingsForm = new SettingsForm();
-           m_SettingsForm.ShowDialog();
-            if (m_SettingsForm.ValidSettings == true)
+            r_SettingsForm = new SettingsForm();
+            r_SettingsForm.ShowDialog();
+            if (r_SettingsForm.ValidSettings == true)
             {
-                m_GameForm = new GameForm(m_SettingsForm.BoardSize, m_SettingsForm.IsHumanPlayer2, m_SettingsForm.Player1Name, m_SettingsForm.Player2Name);
-                m_GameForm.ShowDialog();
+                r_GameForm = new GameForm(r_SettingsForm.BoardSize, r_SettingsForm.IsHumanPlayer2, r_SettingsForm.Player1Name, r_SettingsForm.Player2Name);
+                r_GameForm.ShowDialog();
             }
         }
     }

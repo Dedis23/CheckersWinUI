@@ -1,0 +1,17 @@
+==========================Exercise Checking Report==========================
+Exercise No...........: 5
+First Student Details.: 204185805 - David Sidi
+Second Student Details: 204270953 - Ofir Cohen
+Delivery Date.........: 06.06.18
+Delivered In Delay....: No
+Delay Reason..........: 
+Visual Studio Version.: 2017
+Comments..............: 
+Implementing user interface with graphic information:
+Our game form graphics consists out of checkers pieces pictures (PNG) that we have found on the website OpenGameArt.org. 
+We load the pictures from resources in the assmebly file. the pieces will be put in the right place on board and according to the player's type.
+In addition to the pieces we used some basic colors that are in C# to color the board frame.
+Moreover, we have added a dedicated button to forfeit and a new label that will indicate which turn it is, (black or white) at the bottom of the frame.
+Finally, we used a timer object to control to flow of the game and to make the AI turn more realistic. 
+This way the computer moves will not be too fast, and it will be easier for the user to see them. 
+=======================End Exercise Checking Report=========================

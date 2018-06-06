@@ -47,7 +47,7 @@ namespace CheckersWinUI
             createGameFrame(i_BoardSize);
             this.BackColor = Color.NavajoWhite;
             r_Timer = new Timer();
-            r_Timer.Interval = 300;
+            r_Timer.Interval = 400;
             r_Timer.Tick += timerTick;
         }
 
@@ -133,8 +133,8 @@ namespace CheckersWinUI
             labelCurrentPlayer.BackColor = Color.Transparent;
             labelCurrentPlayer.TextAlign = ContentAlignment.MiddleLeft;
             labelCurrentPlayer.Text = labelCurrentPlayerText.ToString();
-            labelCurrentPlayer.Top = r_CheckersBoard[r_LogicUnit.Board.Size * r_LogicUnit.Board.Size - r_LogicUnit.Board.Size - 1].Bounds.Bottom + labelCurrentPlayer.Height + 20;
-            labelCurrentPlayer.Left = r_CheckersBoard[r_LogicUnit.Board.Size * r_LogicUnit.Board.Size - r_LogicUnit.Board.Size].Bounds.Left;
+            labelCurrentPlayer.Top = r_CheckersBoard[(r_LogicUnit.Board.Size * r_LogicUnit.Board.Size) - r_LogicUnit.Board.Size - 1].Bounds.Bottom + labelCurrentPlayer.Height + 20;
+            labelCurrentPlayer.Left = r_CheckersBoard[(r_LogicUnit.Board.Size * r_LogicUnit.Board.Size) - r_LogicUnit.Board.Size].Bounds.Left;
 
             this.Controls.Add(labelPlayer1);
             this.Controls.Add(buttonForfeit);
@@ -256,11 +256,13 @@ namespace CheckersWinUI
                         // if we got to here, that means the user wanted to make a move
                         // Human turn
                         handleHumanTurn(clickedSquare);
+
                         // Initialize the timer before computer turn
                         if (r_LogicUnit.Mode == LogicUnit.eGameMode.PlayerVsComputer)
                         {
                             r_Timer.Start();
                         }
+
                         // update the boards graphics
                         updateBoardGraphics();
                     }
@@ -273,19 +275,15 @@ namespace CheckersWinUI
             // Computer turn
             if (r_LogicUnit.CurrentTurn == LogicUnit.eCurrentPlayerTurn.Black)
             {   // if we are in player vs computer mode, and its the computer turn, make an AI move
-                bool continueComputerTurn = true;
-                while (continueComputerTurn == true)
+                handleComputerTurn();
+                if (r_LogicUnit.ExtraAITurn == false)
                 {
-                    handleComputerTurn();
-                    if (r_LogicUnit.ExtraAITurn == false)
-                    {
-                        continueComputerTurn = false;
-                    }
+                    r_Timer.Stop();
                 }
+
                 // update the boards graphics
                 updateBoardGraphics();
             }
-            r_Timer.Stop();
         }
 
         private void manageTasksBeforeNextTurn()
@@ -303,6 +301,7 @@ namespace CheckersWinUI
                 if (isCurrentPlayerWon == true)
                 {
                     // check if current player won, either by destroying all the opponents coins or the opponents has no more moves
+                    r_Timer.Stop();
                     isAnotherRound = currentPlayerWonMessageBox();
                 }
             }
@@ -456,6 +455,7 @@ this.Text);
                     default:
                         break;
                 }
+
                 updateCurrentTurnLabel(currentPlayerName);
             }
         }
