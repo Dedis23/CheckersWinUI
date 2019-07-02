@@ -1,7 +1,7 @@
 ==========================Exercise Checking Report==========================
 Exercise No...........: 5
-First Student Details.: 204185805 - David Sidi
-Second Student Details: 204270953 - Ofir Cohen
+First Student Details.:  David Sidi
+Second Student Details:  Ofir Cohen
 Delivery Date.........: 06.06.18
 Delivered In Delay....: No
 Delay Reason..........: 
